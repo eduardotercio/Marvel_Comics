@@ -66,4 +66,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(project(":common"))
+    implementation(project(":designsystem"))
+    implementation(project(":feature:comic"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:favorites"))
+    implementation(project(":feature:splash"))
 }
