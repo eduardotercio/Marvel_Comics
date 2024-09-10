@@ -1,6 +1,12 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.realm.kotlin)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -18,6 +24,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        multiDexEnabled = true
+    }
+
+    buildFeatures {
+        buildConfig = true
+        compose = true
     }
 
     buildTypes {

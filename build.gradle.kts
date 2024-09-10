@@ -5,4 +5,6 @@ plugins {
     alias(libs.plugins.realm.kotlin) apply false
     alias(libs.plugins.jetbrains.compose) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.android.library) apply false
 }

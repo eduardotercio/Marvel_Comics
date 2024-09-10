@@ -1,9 +1,12 @@
+import java.util.Properties
+
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.realm.kotlin)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -11,14 +14,21 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.common"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        consumerProguardFiles("consumer-rules.pro")
     }
+
+    buildFeatures {
+        buildConfig = true
+        compose = true
+    }
+
+    val keystoreFile = project.rootProject.file("keys.properties")
+    val properties = Properties()
+    properties.load(keystoreFile.inputStream())
 
     buildTypes {
         release {
@@ -26,6 +36,28 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
+            )
+            buildConfigField(
+                "String",
+                "PUBLIC_API_KEY",
+                properties.getProperty("PUBLIC_API_KEY") ?: ""
+            )
+            buildConfigField(
+                "String",
+                "PRIVATE_API_KEY",
+                properties.getProperty("PRIVATE_API_KEY") ?: ""
+            )
+        }
+        debug {
+            buildConfigField(
+                "String",
+                "PUBLIC_API_KEY",
+                properties.getProperty("PUBLIC_API_KEY") ?: ""
+            )
+            buildConfigField(
+                "String",
+                "PRIVATE_API_KEY",
+                properties.getProperty("PRIVATE_API_KEY") ?: ""
             )
         }
     }
@@ -39,6 +71,7 @@ android {
 }
 
 dependencies {
+    api(project(":designsystem"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -47,20 +80,22 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.mongodb.realm)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.ktor.client)
-    implementation(libs.ktor.cio)
-    implementation(libs.koin.bom)
-    implementation(libs.koin.android)
-    implementation(libs.koin.core)
-    implementation(libs.koin.ktor)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.test)
-    implementation(libs.lifecycle.viewmodel)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.navigation.compose)
-    implementation(libs.coil)
-    implementation(libs.coil.compose)
+    api(libs.mongodb.realm)
+    api(libs.kotlinx.coroutines.core)
+    api(libs.ktor.client)
+    api(libs.ktor.cio)
+    api(libs.ktor.client.content.negotiation)
+    api(libs.ktor.serialization.kotlinx.json)
+    api(libs.koin.android)
+    api(libs.koin.core)
+    api(libs.koin.ktor)
+    api(libs.koin.compose)
+    api(libs.koin.androidx.compose)
+    api(libs.koin.test)
+    api(libs.lifecycle.viewmodel)
+    api(libs.lifecycle.viewmodel.compose)
+    api(libs.kotlinx.serialization.json)
+    api(libs.navigation.compose)
+    api(libs.coil)
+    api(libs.coil.compose)
 }
