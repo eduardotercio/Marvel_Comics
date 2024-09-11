@@ -71,8 +71,6 @@ android {
 }
 
 dependencies {
-    api(project(":designsystem"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -98,4 +96,5 @@ dependencies {
     api(libs.navigation.compose)
     api(libs.coil)
     api(libs.coil.compose)
+    api(libs.material.compose)
 }
