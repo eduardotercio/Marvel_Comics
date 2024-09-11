@@ -1,19 +1,21 @@
 package com.example.common.data.di
 
-import com.example.common.BuildConfig
-import com.example.common.data.util.generateMd5
+import com.example.common.data.repository.ComicsRepositoryImpl
+import com.example.common.data.service.remote.MarvelComicsApiServiceImpl
+import com.example.common.domain.repository.ComicsRepository
+import com.example.common.domain.service.remote.MarvelComicsApiService
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private const val TIME_OUT = 15000L
 
-val ktorModule = module {
+val commonDataModule = module {
     single {
         HttpClient {
             install(ContentNegotiation) {
@@ -28,4 +30,7 @@ val ktorModule = module {
             }
         }
     }
+
+    singleOf(::ComicsRepositoryImpl) bind ComicsRepository::class
+    singleOf(::MarvelComicsApiServiceImpl) bind MarvelComicsApiService::class
 }
