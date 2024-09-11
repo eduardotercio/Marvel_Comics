@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Comic(
+data class ComicResponse(
     @SerialName("title")
     val title: String,
 

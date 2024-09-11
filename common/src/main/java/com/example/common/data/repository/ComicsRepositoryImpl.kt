@@ -1,23 +1,22 @@
 package com.example.common.data.repository
 
-import com.example.common.data.model.ComicDataResponse
-import com.example.common.data.util.Consts.BASE_URL
-import com.example.common.data.util.Consts.COMICS
+import com.example.common.data.model.RequestState
+import com.example.common.domain.model.Comic
 import com.example.common.domain.repository.ComicsRepository
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
+import com.example.common.domain.service.remote.MarvelComicsApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ComicsRepositoryImpl(
-    private val httpClient: HttpClient
+    private val apiService: MarvelComicsApiService
 ) : ComicsRepository {
-    override suspend fun getComics() {
-        val url = BASE_URL.plus(COMICS)
-
-        val request = httpClient.get(url)
-
-        val response = request.body<ComicDataResponse>()
-
-        println("dudu ->  $response")
+    override suspend fun getComics(getFromLocal: Boolean): RequestState<List<Comic>> {
+        return withContext(Dispatchers.IO) {
+            if (getFromLocal) {
+                apiService.getComics() //TODO
+            } else {
+                apiService.getComics()
+            }
+        }
     }
 }

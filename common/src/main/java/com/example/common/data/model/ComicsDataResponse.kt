@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ComicDataResponse(
+data class ComicsDataResponse(
     @SerialName("code")
     val code: Int,
 

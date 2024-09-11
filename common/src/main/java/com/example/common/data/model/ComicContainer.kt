@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ComicContainer(
     @SerialName("results")
-    val comics: Array<Comic>
+    val comics: Array<ComicResponse>
 )
