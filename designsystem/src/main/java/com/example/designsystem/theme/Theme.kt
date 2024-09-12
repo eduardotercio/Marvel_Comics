@@ -61,3 +61,8 @@ fun MarvelComicsTheme(content: @Composable () -> Unit) {
         )
     }
 }
+
+object MarvelComicsTheme {
+    val colors: MarvelComicsColors
+        @Composable get() = LocalDesignSystemThemeColors.current
+}
