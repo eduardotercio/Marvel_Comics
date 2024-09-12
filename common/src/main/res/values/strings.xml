@@ -1,3 +1,5 @@
 <resources>
+    <string name="icon_description_favorite">Favorite icon</string>
+    <string name="image_description_comic">Comic image</string>
     <string name="app_name">common</string>
 </resources>
