@@ -12,5 +12,7 @@ data class Comic(
 
     val charactersAvailable: Int,
 
-    val charactersUrl: List<String>
+    val charactersUrl: List<String>,
+
+    val isFavorite: Boolean = false
 )

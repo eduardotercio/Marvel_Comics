@@ -14,6 +14,12 @@ class HomeScreenViewModel(
     BaseViewModel<HomeScreenContract.Event, HomeScreenContract.State, HomeScreenContract.Effect>() {
     override fun setInitialState() = HomeScreenContract.State()
 
+    init {
+        viewModelScope.launch {
+            fetchComics()
+        }
+    }
+
     override fun handleEvents(event: HomeScreenContract.Event) {
         viewModelScope.launch {
             when (event) {

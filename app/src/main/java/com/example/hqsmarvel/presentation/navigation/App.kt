@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import com.example.common.presentation.model.Route
 import com.example.designsystem.theme.MarvelComicsTheme
 import com.example.hqsmarvel.R
 import com.example.hqsmarvel.presentation.components.BottomAppBar
 import com.example.hqsmarvel.presentation.model.BottomNavItem
-import com.example.common.presentation.model.Route
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

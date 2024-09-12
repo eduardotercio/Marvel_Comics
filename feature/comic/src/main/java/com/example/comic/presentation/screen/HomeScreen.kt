@@ -1,64 +1,46 @@
 package com.example.comic.presentation.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import com.example.comic.presentation.components.ComicCarousel
 import com.example.comic.presentation.components.CustomTopAppBar
-import com.example.designsystem.theme.designSystemThemePalette
+import com.example.designsystem.dimens.Dimens
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(navController: NavController) {
     val viewModel = koinViewModel<HomeScreenViewModel>()
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+    val comics = state.comics
+    val seriesList = comics.map { it.series }.toSet().toList()
 
     Scaffold(
         topBar = {
             CustomTopAppBar()
         }
     ) {
-        Column(
+        Spacer(modifier = Modifier.height(Dimens.medium))
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(text = "series", color = designSystemThemePalette.onBackgroundColor)
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    item { ComicCard() }
-                    item { ComicCard() }
-                    item { ComicCard() }
-                }
+            items(seriesList) { series ->
+                ComicCarousel(
+                    serie = series,
+                    comics = comics.filter { it.series == series }
+                )
+                Spacer(modifier = Modifier.height(Dimens.big))
             }
         }
-    }
-}
-
-@Composable
-fun ComicCard() {
-    Column {
-        AsyncImage(
-            model = com.example.common.R.drawable.image_example,
-            contentDescription = "Comic Image",
-            contentScale = ContentScale.Fit,
-        )
-        Text(text = "Comic name", color = designSystemThemePalette.onBackgroundColor)
     }
 }
