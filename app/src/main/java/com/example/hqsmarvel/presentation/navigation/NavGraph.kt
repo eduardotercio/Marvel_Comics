@@ -5,17 +5,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.comic.presentation.screen.HomeScreen
+import com.example.home.presentation.screen.HomeScreen
 import com.example.common.presentation.model.Route
-import com.example.splash.presentation.SplashScreen
 
 @Composable
-fun NavGraph(navController: NavHostController, startDestination: Route = Route.Splash) {
+fun NavGraph(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = startDestination) {
-        composable<Route.Splash> {
-            SplashScreen(navController)
-        }
+    NavHost(
+        navController = navController,
+        startDestination = Route.Home
+    ) {
         composable<Route.Home> {
             HomeScreen(navController)
         }

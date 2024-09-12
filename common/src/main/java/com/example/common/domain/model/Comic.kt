@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Comic(
+    val id: Int,
+
     val title: String,
 
     val series: String,

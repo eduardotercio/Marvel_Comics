@@ -8,6 +8,7 @@ fun ComicsDataResponse.toComicList(): List<Comic> {
     this.container.comics.forEach { comicResponse ->
         val httpsImage = "https".plus(comicResponse.thumbnail.path.drop(4))
         val comic = Comic(
+            id = comicResponse.id,
             title = comicResponse.title,
             series = comicResponse.series.name,
             thumbnail = httpsImage.plus('.').plus(comicResponse.thumbnail.extension),

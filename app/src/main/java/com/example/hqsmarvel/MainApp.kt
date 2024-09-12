@@ -1,7 +1,7 @@
 package com.example.hqsmarvel
 
 import android.app.Application
-import com.example.comic.presentation.di.comicPresentationModule
+import com.example.home.presentation.di.comicPresentationModule
 import com.example.common.data.di.commonDataModule
 import com.example.common.domain.di.commonDomainModule
 import org.koin.android.ext.koin.androidContext

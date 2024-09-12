@@ -84,5 +84,4 @@ dependencies {
     implementation(project(":feature:comic"))
     implementation(project(":feature:home"))
     implementation(project(":feature:favorites"))
-    implementation(project(":feature:splash"))
 }
