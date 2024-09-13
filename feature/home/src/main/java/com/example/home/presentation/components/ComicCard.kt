@@ -56,7 +56,7 @@ fun ComicCard(comic: Comic) {
                 .width(130.dp.responsiveDp())
         ) {
             AsyncImage(
-                model = comic.thumbnail,
+                model = comic.imageUrl,
                 contentDescription = stringResource(id = commonString.image_description_comic),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier

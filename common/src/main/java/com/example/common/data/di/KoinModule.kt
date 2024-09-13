@@ -1,7 +1,9 @@
 package com.example.common.data.di
 
+import com.example.common.data.repository.CharacterRepositoryImpl
 import com.example.common.data.repository.ComicsRepositoryImpl
 import com.example.common.data.service.remote.MarvelComicsApiServiceImpl
+import com.example.common.domain.repository.CharacterRepository
 import com.example.common.domain.repository.ComicsRepository
 import com.example.common.domain.service.remote.MarvelComicsApiService
 import io.ktor.client.HttpClient
@@ -32,5 +34,6 @@ val commonDataModule = module {
     }
 
     singleOf(::ComicsRepositoryImpl) bind ComicsRepository::class
+    singleOf(::CharacterRepositoryImpl) bind CharacterRepository::class
     singleOf(::MarvelComicsApiServiceImpl) bind MarvelComicsApiService::class
 }

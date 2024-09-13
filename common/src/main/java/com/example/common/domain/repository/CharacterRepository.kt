@@ -1,11 +1,8 @@
-package com.example.common.domain.service.remote
+package com.example.common.domain.repository
 
 import com.example.common.data.model.RequestState
 import com.example.common.domain.model.Character
-import com.example.common.domain.model.Comic
 
-interface MarvelComicsApiService {
-    suspend fun getComics(): RequestState<List<Comic>>
-
+interface CharacterRepository {
     suspend fun getCharactersFromComic(charactersUrl: List<String>): RequestState<List<Character>>
 }
