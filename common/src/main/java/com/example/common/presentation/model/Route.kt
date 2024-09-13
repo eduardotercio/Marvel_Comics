@@ -4,8 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Route {
-    @Serializable
-    data object Splash : Route()
 
     @Serializable
     data object Home : Route()
@@ -15,6 +13,6 @@ sealed class Route {
 
     @Serializable
     data class Comic(
-        val characterUrl: String
+        val charactersUrl: List<String>
     ) : Route()
 }

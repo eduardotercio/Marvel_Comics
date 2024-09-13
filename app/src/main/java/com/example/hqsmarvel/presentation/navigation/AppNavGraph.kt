@@ -5,12 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.home.presentation.screen.HomeScreen
+import com.example.comic.presentation.screen.ComicScreen
 import com.example.common.presentation.model.Route
+import com.example.home.presentation.screen.HomeScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-
     NavHost(
         navController = navController,
         startDestination = Route.Home
@@ -23,7 +23,11 @@ fun NavGraph(navController: NavHostController) {
         }
         composable<Route.Comic> {
             val args = it.toRoute<Route.Comic>()
-            val characterUrl = args.characterUrl
+            val charactersUrl = args.charactersUrl
+            ComicScreen(
+                navController = navController,
+                charactersUrl = charactersUrl
+            )
         }
     }
 }

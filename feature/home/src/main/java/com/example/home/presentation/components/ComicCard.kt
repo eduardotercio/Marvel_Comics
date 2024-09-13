@@ -37,8 +37,10 @@ import com.example.designsystem.theme.designSystemThemePalette
 import com.example.designsystem.theme.mavenProFontFamily
 
 @Composable
-fun ComicCard(comic: Comic) {
-
+fun ComicCard(
+    comic: Comic,
+    onComicClicked: () -> Unit
+) {
     val favoriteUncheckedId = commonDrawable.ic_favorite_unchecked
     val favoriteCheckedId = commonDrawable.ic_favorite_checked
 
@@ -56,13 +58,14 @@ fun ComicCard(comic: Comic) {
                 .width(130.dp.responsiveDp())
         ) {
             AsyncImage(
-                model = comic.thumbnail,
+                model = comic.imageUrl,
                 contentDescription = stringResource(id = commonString.image_description_comic),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .height(160.dp.responsiveDp())
                     .width(130.dp.responsiveDp())
                     .clip(RoundedCornerShape(Dimens.default))
+                    .clickable { onComicClicked() }
             )
             Text(
                 text = comic.title,

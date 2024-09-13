@@ -46,5 +46,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     api(libs.androidx.runtime)
-    implementation(project(":common"))
+    implementation(libs.material.compose)
 }

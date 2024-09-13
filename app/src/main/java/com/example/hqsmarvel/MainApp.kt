@@ -1,9 +1,10 @@
 package com.example.hqsmarvel
 
 import android.app.Application
-import com.example.home.presentation.di.comicPresentationModule
+import com.example.comic.presentation.di.comicPresentationModule
 import com.example.common.data.di.commonDataModule
 import com.example.common.domain.di.commonDomainModule
+import com.example.home.presentation.di.homePresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -16,6 +17,7 @@ class MainApp : Application() {
             modules(
                 commonDataModule,
                 commonDomainModule,
+                homePresentationModule,
                 comicPresentationModule
             )
         }

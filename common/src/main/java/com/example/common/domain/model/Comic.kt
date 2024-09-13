@@ -10,7 +10,7 @@ data class Comic(
 
     val series: String,
 
-    val thumbnail: String,
+    val imageUrl: String,
 
     val charactersAvailable: Int,
 

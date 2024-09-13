@@ -1,7 +1,9 @@
 package com.example.common.data.service.remote
 
 import com.example.common.BuildConfig
+import com.example.common.data.mapper.toCharacter
 import com.example.common.data.mapper.toComicList
+import com.example.common.data.model.CharacterDataResponse
 import com.example.common.data.model.ComicsDataResponse
 import com.example.common.data.model.RequestState
 import com.example.common.data.util.Consts.API_KEY
@@ -10,6 +12,7 @@ import com.example.common.data.util.Consts.COMICS
 import com.example.common.data.util.Consts.HASH
 import com.example.common.data.util.Consts.TIMESTAMP
 import com.example.common.data.util.generateMd5
+import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
 import com.example.common.domain.service.remote.MarvelComicsApiService
 import io.ktor.client.HttpClient
@@ -17,6 +20,10 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 class MarvelComicsApiServiceImpl(
     private val httpClient: HttpClient
@@ -24,7 +31,7 @@ class MarvelComicsApiServiceImpl(
     override suspend fun getComics(): RequestState<List<Comic>> {
         return runCatching {
             val url = BASE_URL.plus(COMICS)
-            val request = insertParameter(url)
+            val request = insertDefaultParameters(url)
 
             val response = request.body<ComicsDataResponse>()
 
@@ -34,7 +41,26 @@ class MarvelComicsApiServiceImpl(
         }
     }
 
-    private suspend fun insertParameter(url: String): HttpResponse {
+    override suspend fun getCharactersFromComic(charactersUrl: List<String>): RequestState<List<Character>> {
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                val charactersList = charactersUrl.map { url ->
+                    async {
+                        val request = insertDefaultParameters(url = url)
+                        val response = request.body<CharacterDataResponse>()
+                        response.toCharacter()
+                    }
+                }.awaitAll()
+                RequestState.Success(charactersList)
+            }.getOrElse {
+                RequestState.Error("")
+            }
+        }
+    }
+
+    private suspend fun insertDefaultParameters(
+        url: String,
+    ): HttpResponse {
         val timestamp = System.currentTimeMillis().toString()
         val privateKey = BuildConfig.PRIVATE_API_KEY
         val publicKey = BuildConfig.PUBLIC_API_KEY

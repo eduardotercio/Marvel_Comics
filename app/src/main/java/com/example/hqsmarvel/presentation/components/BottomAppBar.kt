@@ -15,33 +15,42 @@ import com.example.hqsmarvel.presentation.model.BottomNavItem
 
 @Composable
 fun BottomAppBar(navController: NavController, items: List<BottomNavItem> = listOf()) {
-    val currentDestination by navController.currentBackStackEntryAsState()
-    BottomNavigation(
-        windowInsets = BottomNavigationDefaults.windowInsets,
-        backgroundColor = designSystemThemePalette.surfaceColor,
-        contentColor = designSystemThemePalette.onSurfaceColor
-    ) {
-        items.forEach { item ->
-            val label = item.route.toString()
-            BottomNavigationItem(
-                selected = currentDestination?.destination?.route?.contains(item.route.toString()) == true,
-                onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    fun isCurrentRouteEqualTo(route: String) = currentDestination?.route?.contains(route) == true
+
+    val showBottomBar =
+        items.any { isCurrentRouteEqualTo(it.route.toString()) }
+
+    if (showBottomBar) {
+        BottomNavigation(
+            windowInsets = BottomNavigationDefaults.windowInsets,
+            backgroundColor = designSystemThemePalette.surfaceColor,
+            contentColor = designSystemThemePalette.onSurfaceColor
+        ) {
+            items.forEach { item ->
+                val label = item.route.toString()
+                BottomNavigationItem(
+                    selected = isCurrentRouteEqualTo(item.route.toString()),
+                    onClick = {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        painter = painterResource(id = item.iconId),
-                        contentDescription = label
-                    )
-                },
-                label = { Text(text = label) }
-            )
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = item.iconId),
+                            contentDescription = label
+                        )
+                    },
+                    label = { Text(text = label) }
+                )
+            }
         }
     }
 }

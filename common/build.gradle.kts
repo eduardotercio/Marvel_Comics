@@ -78,6 +78,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(project(":designsystem"))
     api(libs.mongodb.realm)
     api(libs.kotlinx.coroutines.core)
     api(libs.ktor.client)

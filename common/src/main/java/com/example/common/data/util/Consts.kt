@@ -5,6 +5,8 @@ object Consts {
     const val COMICS = "comics"
     const val CHARACTERS = "characters"
 
+    const val CHARACTERS_ID = "charactersId"
+
     const val TIMESTAMP = "ts"
     const val API_KEY = "apikey"
     const val HASH = "hash"
