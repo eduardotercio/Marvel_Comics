@@ -35,7 +35,7 @@ fun HomeScreen(navController: NavController) {
             CustomTopAppBar(stringResource(id = commonString.marvel_comics))
         }
     ) { paddingValues ->
-        Spacer(modifier = Modifier.height(Dimens.medium))
+        Spacer(modifier = Modifier.height(Dimens.big))
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
