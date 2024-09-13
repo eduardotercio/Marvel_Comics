@@ -8,8 +8,6 @@ import com.example.common.data.model.ComicsDataResponse
 import com.example.common.data.model.RequestState
 import com.example.common.data.util.Consts.API_KEY
 import com.example.common.data.util.Consts.BASE_URL
-import com.example.common.data.util.Consts.CHARACTERS
-import com.example.common.data.util.Consts.CHARACTERS_ID
 import com.example.common.data.util.Consts.COMICS
 import com.example.common.data.util.Consts.HASH
 import com.example.common.data.util.Consts.TIMESTAMP
@@ -22,6 +20,10 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 class MarvelComicsApiServiceImpl(
     private val httpClient: HttpClient
@@ -29,7 +31,7 @@ class MarvelComicsApiServiceImpl(
     override suspend fun getComics(): RequestState<List<Comic>> {
         return runCatching {
             val url = BASE_URL.plus(COMICS)
-            val request = insertParameters(url)
+            val request = insertDefaultParameters(url)
 
             val response = request.body<ComicsDataResponse>()
 
@@ -40,30 +42,24 @@ class MarvelComicsApiServiceImpl(
     }
 
     override suspend fun getCharactersFromComic(charactersUrl: List<String>): RequestState<List<Character>> {
-        return runCatching {
-            val url = BASE_URL.plus(CHARACTERS)
-            val charactersList = mutableListOf<Character>()
-            charactersUrl.forEach { characterUrl ->
-                val request = insertParameters(
-                    url = url,
-                    parameter = Parameter(
-                        key = CHARACTERS_ID,
-                        value = characterUrl
-                    )
-                )
-                val response = request.body<CharacterDataResponse>()
-                charactersList.add(response.toCharacter())
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                val charactersList = charactersUrl.map { url ->
+                    async {
+                        val request = insertDefaultParameters(url = url)
+                        val response = request.body<CharacterDataResponse>()
+                        response.toCharacter()
+                    }
+                }.awaitAll()
+                RequestState.Success(charactersList)
+            }.getOrElse {
+                RequestState.Error("")
             }
-
-            RequestState.Success(charactersList)
-        }.getOrElse {
-            RequestState.Error("")
         }
     }
 
-    private suspend fun insertParameters(
+    private suspend fun insertDefaultParameters(
         url: String,
-        parameter: Parameter? = null
     ): HttpResponse {
         val timestamp = System.currentTimeMillis().toString()
         val privateKey = BuildConfig.PRIVATE_API_KEY
@@ -74,16 +70,8 @@ class MarvelComicsApiServiceImpl(
             parameter(TIMESTAMP, timestamp)
             parameter(API_KEY, publicKey)
             parameter(HASH, hash)
-            if (parameter != null) {
-                parameter(parameter.key, parameter.value)
-            }
         }
 
         return request
     }
-
-    data class Parameter(
-        val key: String,
-        val value: String
-    )
 }

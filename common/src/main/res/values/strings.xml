@@ -1,5 +1,9 @@
 <resources>
+    <string name="app_name">common</string>
     <string name="icon_description_favorite">Favorite icon</string>
     <string name="image_description_comic">Comic image</string>
-    <string name="app_name">common</string>
+    <string name="image_description_character">Character image</string>
+    <string name="marvel_comics">Marvel Comics</string>
+    <string name="marvel_characters">Characters</string>
+    <string name="favorites_comics">Favorites Comics</string>
 </resources>

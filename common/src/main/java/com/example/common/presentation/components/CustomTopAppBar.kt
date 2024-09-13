@@ -1,4 +1,4 @@
-package com.example.home.presentation.components
+package com.example.common.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,7 @@ import com.example.designsystem.theme.designSystemThemePalette
 import com.example.designsystem.theme.mavenProFontFamily
 
 @Composable
-fun CustomTopAppBar() {
+fun CustomTopAppBar(label: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -26,7 +26,7 @@ fun CustomTopAppBar() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Marvel Comics",
+            text = label,
             textAlign = TextAlign.Center,
             color = designSystemThemePalette.textPrimary,
             fontFamily = mavenProFontFamily,

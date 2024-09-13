@@ -11,11 +11,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.home.presentation.components.ComicCarousel
-import com.example.home.presentation.components.CustomTopAppBar
+import com.example.common.presentation.components.CustomTopAppBar
+import com.example.common.presentation.model.Route
+import com.example.common.presentation.util.commonString
 import com.example.designsystem.dimens.Dimens
+import com.example.home.presentation.components.ComicCarousel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -29,7 +32,7 @@ fun HomeScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            CustomTopAppBar()
+            CustomTopAppBar(stringResource(id = commonString.marvel_comics))
         }
     ) { paddingValues ->
         Spacer(modifier = Modifier.height(Dimens.medium))
@@ -45,7 +48,10 @@ fun HomeScreen(navController: NavController) {
                 val series = seriesList[index]
                 ComicCarousel(
                     serie = series,
-                    comics = comics.filter { it.series == series }
+                    comics = comics.filter { it.series == series },
+                    onComicClicked = { charactersUrl ->
+                        navController.navigate(Route.Comic(charactersUrl))
+                    }
                 )
                 Spacer(modifier = Modifier.height(Dimens.big))
             }
