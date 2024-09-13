@@ -13,6 +13,7 @@ sealed class Route {
 
     @Serializable
     data class Comic(
-        val charactersUrl: List<String>
+        val charactersUrl: List<String>,
+        val comicId: Int
     ) : Route()
 }

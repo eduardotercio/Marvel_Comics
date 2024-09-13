@@ -49,8 +49,8 @@ fun HomeScreen(navController: NavController) {
                 ComicCarousel(
                     serie = series,
                     comics = comics.filter { it.series == series },
-                    onComicClicked = { charactersUrl ->
-                        navController.navigate(Route.Comic(charactersUrl))
+                    onComicClicked = { charactersUrl, comicId ->
+                        navController.navigate(Route.Comic(charactersUrl, comicId))
                     }
                 )
                 Spacer(modifier = Modifier.height(Dimens.big))

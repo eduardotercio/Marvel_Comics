@@ -8,5 +8,7 @@ data class Character(
 
     val name: String,
 
-    val imageUrl: String
+    val imageUrl: String,
+
+    val characterUrl: String
 )

@@ -1,9 +1,10 @@
 package com.example.common.data.mapper
 
-import com.example.common.data.model.CharacterDataResponse
-import com.example.common.data.model.ComicsDataResponse
+import com.example.common.data.model.dto.ComicDto
+import com.example.common.data.model.response.ComicsDataResponse
 import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
+import io.realm.kotlin.ext.toRealmList
 
 fun ComicsDataResponse.toComicList(): List<Comic> {
     val comicsList = mutableListOf<Comic>()
@@ -22,12 +23,26 @@ fun ComicsDataResponse.toComicList(): List<Comic> {
     return comicsList
 }
 
-fun CharacterDataResponse.toCharacter(): Character {
-    val characterResponse = this.container.characterResponses[0]
-    val httpsImage = "https".plus(characterResponse.thumbnail.path.drop(4))
-    return Character(
-        id = characterResponse.id,
-        name = characterResponse.name,
-        imageUrl = httpsImage.plus('.').plus(characterResponse.thumbnail.extension)
+fun Comic.toComicDto(characters: List<Character>): ComicDto {
+    return ComicDto(
+        id = this.id,
+        title = this.title,
+        series = this.series,
+        imageUrl = this.imageUrl,
+        charactersAvailable = this.charactersAvailable,
+        characters = characters.map { it.toCharacterDto() }.toRealmList(),
+        isFavorite = this.isFavorite
+    )
+}
+
+fun ComicDto.toComic(): Comic {
+    return Comic(
+        id = this.id,
+        title = this.title,
+        series = this.series,
+        imageUrl = this.imageUrl,
+        charactersAvailable = this.charactersAvailable,
+        charactersUrl = this.characters.map { it.characterUrl },
+        isFavorite = this.isFavorite
     )
 }

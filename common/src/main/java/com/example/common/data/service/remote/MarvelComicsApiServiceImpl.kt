@@ -3,9 +3,9 @@ package com.example.common.data.service.remote
 import com.example.common.BuildConfig
 import com.example.common.data.mapper.toCharacter
 import com.example.common.data.mapper.toComicList
-import com.example.common.data.model.CharacterDataResponse
-import com.example.common.data.model.ComicsDataResponse
 import com.example.common.data.model.RequestState
+import com.example.common.data.model.response.CharacterDataResponse
+import com.example.common.data.model.response.ComicsDataResponse
 import com.example.common.data.util.Consts.API_KEY
 import com.example.common.data.util.Consts.BASE_URL
 import com.example.common.data.util.Consts.COMICS

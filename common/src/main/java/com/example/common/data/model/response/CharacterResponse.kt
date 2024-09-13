@@ -1,4 +1,4 @@
-package com.example.common.data.model
+package com.example.common.data.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,5 +12,8 @@ data class CharacterResponse(
     val name: String,
 
     @SerialName("thumbnail")
-    val thumbnail: Image
+    val thumbnail: Image,
+
+    @SerialName("resourceURI")
+    val characterUrl: String
 )

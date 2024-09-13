@@ -5,8 +5,9 @@ import com.example.common.domain.model.Character
 
 interface GetCharacterUseCase {
     suspend operator fun invoke(
-        charactersUrl: List<String>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        charactersUrl: List<String>,
+        comicId: Int
     ): RequestState<List<Character>>
 }

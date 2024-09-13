@@ -11,18 +11,25 @@ class GetCharacterUseCaseImpl(
     private val repository: CharacterRepository
 ) : GetCharacterUseCase {
     override suspend fun invoke(
-        charactersUrl: List<String>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        charactersUrl: List<String>,
+        comicId: Int
     ): RequestState<List<Character>> {
         return withContext(Dispatchers.Default) {
             if (page > 0) delay(2000)
+
             val startingIndex = page * pageSize
-            var rangeIndex = startingIndex + pageSize
-            if (charactersUrl.size < rangeIndex) rangeIndex = charactersUrl.size
+            var lastIndex = startingIndex + pageSize - 1
+            if (charactersUrl.size < lastIndex) lastIndex = charactersUrl.size - 1
+
+            val range = IntRange(startingIndex, lastIndex)
+
             if (startingIndex <= charactersUrl.size) {
                 repository.getCharactersFromComic(
-                    charactersUrl.slice(startingIndex until rangeIndex)
+                    charactersUrl,
+                    comicId,
+                    range
                 )
             } else RequestState.Success(emptyList())
         }

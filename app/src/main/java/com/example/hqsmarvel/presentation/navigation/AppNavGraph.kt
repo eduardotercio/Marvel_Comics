@@ -24,9 +24,11 @@ fun NavGraph(navController: NavHostController) {
         composable<Route.Comic> {
             val args = it.toRoute<Route.Comic>()
             val charactersUrl = args.charactersUrl
+            val comicId = args.comicId
             ComicScreen(
                 navController = navController,
-                charactersUrl = charactersUrl
+                charactersUrl = charactersUrl,
+                comicId = comicId
             )
         }
     }

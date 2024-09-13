@@ -43,7 +43,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ComicScreen(
     navController: NavController,
-    charactersUrl: List<String>
+    charactersUrl: List<String>,
+    comicId: Int
 ) {
 
     val viewModel = koinViewModel<ComicScreenViewModel>()
@@ -51,7 +52,7 @@ fun ComicScreen(
     val characters = state.characters
 
     LaunchedEffect(Unit) {
-        viewModel.setEvent(ComicScreenContract.Event.SaveCharactersUrl(charactersUrl))
+        viewModel.setEvent(ComicScreenContract.Event.LoadNextItems(charactersUrl, comicId))
     }
 
     Scaffold(
@@ -86,7 +87,12 @@ fun ComicScreen(
                 ) { index ->
                     val character = characters[index]
                     if (index >= characters.size - 1 && !state.endReached && !state.isLoading) {
-                        viewModel.setEvent(ComicScreenContract.Event.LoadNextItems)
+                        viewModel.setEvent(
+                            ComicScreenContract.Event.LoadNextItems(
+                                charactersUrl,
+                                comicId
+                            )
+                        )
                     }
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
