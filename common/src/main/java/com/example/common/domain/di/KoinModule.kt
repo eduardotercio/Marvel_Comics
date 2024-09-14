@@ -2,6 +2,8 @@ package com.example.common.domain.di
 
 import com.example.common.domain.usecase.DeleteComicUseCase
 import com.example.common.domain.usecase.DeleteComicUseCaseImpl
+import com.example.common.domain.usecase.FetchComicsRealTime
+import com.example.common.domain.usecase.FetchComicsRealTimeImpl
 import com.example.common.domain.usecase.GetAllCharactersFromComicUseCase
 import com.example.common.domain.usecase.GetAllCharactersFromComicUseCaseImpl
 import com.example.common.domain.usecase.GetCharactersPaginationUseCase
@@ -16,6 +18,7 @@ import org.koin.dsl.module
 
 val commonDomainModule = module {
     factoryOf(::GetComicsUseCaseImpl) bind GetComicsUseCase::class
+    factoryOf(::FetchComicsRealTimeImpl) bind FetchComicsRealTime::class
     factoryOf(::GetCharactersPaginationUseCaseImpl) bind GetCharactersPaginationUseCase::class
     factoryOf(::SaveComicUseCaseImpl) bind SaveComicUseCase::class
     factoryOf(::GetAllCharactersFromComicUseCaseImpl) bind GetAllCharactersFromComicUseCase::class

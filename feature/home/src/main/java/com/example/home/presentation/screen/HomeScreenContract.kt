@@ -7,7 +7,6 @@ import com.example.common.presentation.base.UiState
 
 object HomeScreenContract {
     interface Event : UiEvent {
-        data object FetchComics : Event
 
         data class OnComicClicked(
             val charactersUrl: List<String>,

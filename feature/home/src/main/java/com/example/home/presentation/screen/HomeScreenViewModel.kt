@@ -30,10 +30,6 @@ class HomeScreenViewModel(
     override fun handleEvents(event: HomeScreenContract.Event) {
         viewModelScope.launch {
             when (event) {
-                is HomeScreenContract.Event.FetchComics -> {
-                    fetchComics()
-                }
-
                 is HomeScreenContract.Event.OnComicClicked -> {
                     setEffect {
                         HomeScreenContract.Effect.NavigateToComicScreen(
@@ -104,7 +100,7 @@ class HomeScreenViewModel(
         when (response) {
             is RequestState.Success -> {
                 saveComicUseCase.invoke(
-                    comic = currentState.lastComicClickedOnFavorite,
+                    comic = currentState.lastComicClickedOnFavorite.copy(isFavorite = true),
                     characters = response.data
                 )
                 setState {

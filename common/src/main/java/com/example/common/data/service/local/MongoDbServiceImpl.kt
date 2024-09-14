@@ -9,7 +9,10 @@ import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
 import com.example.common.domain.service.local.MongoDbService
 import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 
 class MongoDbServiceImpl(
     private val realm: Realm
@@ -27,11 +30,15 @@ class MongoDbServiceImpl(
             ).find().asFlow().firstOrNull()?.list?.map {
                 it.toComic()
             }
-
             RequestState.Success(comics ?: emptyList())
         }.getOrElse {
             RequestState.Error("Error getting comics, try again later.")
         }
+    }
+
+    override suspend fun fetchComicsRealTime(): Flow<List<Comic>> {
+        return realm.query<ComicDto>().asFlow()
+            .map { resultsChange -> resultsChange.list.map { it.toComic() } }
     }
 
     override suspend fun getCharactersFromComic(comicId: Int): RequestState<List<Character>> {
@@ -62,6 +69,12 @@ class MongoDbServiceImpl(
             ).first().find()
 
             localComic?.let { delete(it) }
+        }
+    }
+
+    override suspend fun cleanDatabase() {
+        realm.writeBlocking {
+            this.deleteAll()
         }
     }
 }

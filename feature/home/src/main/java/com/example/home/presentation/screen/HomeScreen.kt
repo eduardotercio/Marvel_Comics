@@ -21,7 +21,7 @@ import com.example.common.presentation.model.Route
 import com.example.common.presentation.util.commonString
 import com.example.designsystem.dimens.Dimens
 import com.example.home.presentation.components.ComicCarousel
-import com.example.home.presentation.components.CustomDialog
+import com.example.common.presentation.components.CustomDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

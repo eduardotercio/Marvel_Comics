@@ -7,12 +7,32 @@ import com.example.common.presentation.base.UiState
 
 object FavoritesScreenContract {
     interface Event : UiEvent {
-        data object FetchLocalComics : Event
+        data class OnComicClicked(
+            val charactersUrl: List<String>,
+            val comicId: Int
+        ) : Event
+
+        data class OnFavoriteIconClicked(
+            val charactersUrl: List<String>,
+            val comic: Comic
+        ) : Event
+
+        data object OnRemoveFavoriteComic : Event
     }
 
-    interface Effect : UiEffect
+    interface Effect : UiEffect {
+        data class NavigateToComicScreen(
+            val charactersUrl: List<String>,
+            val comicId: Int
+        ) : Effect
+
+        data object OpenFavoriteDialog : Effect
+    }
 
     data class State(
-        val favoriteComics: List<Comic> = emptyList()
+        val favoriteComics: List<Comic> = emptyList(),
+        val isLoading: Boolean = true,
+        val lastComicClickedOnFavorite: Comic = Comic(),
+        val charUrlsLastComicClickedOnFavorite: List<String> = listOf()
     ) : UiState
 }

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.comic.presentation.screen.ComicScreen
 import com.example.common.presentation.model.Route
+import com.example.favorites.presentation.screen.FavoritesScreen
 import com.example.home.presentation.screen.HomeScreen
 
 @Composable
@@ -19,7 +20,7 @@ fun NavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable<Route.Favorite> {
-
+            FavoritesScreen(navController)
         }
         composable<Route.Comic> {
             val args = it.toRoute<Route.Comic>()

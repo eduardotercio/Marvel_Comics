@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.example.common.domain.model.Comic
+import com.example.common.presentation.components.ComicCard
 import com.example.designsystem.dimens.Dimens
 import com.example.designsystem.dimens.responsiveSp
 import com.example.designsystem.theme.designSystemThemePalette
