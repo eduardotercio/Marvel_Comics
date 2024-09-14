@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.example.common.domain.model.Comic
+import com.example.common.presentation.components.ComicCard
 import com.example.designsystem.dimens.Dimens
 import com.example.designsystem.dimens.responsiveSp
 import com.example.designsystem.theme.designSystemThemePalette
@@ -22,7 +23,8 @@ import com.example.designsystem.theme.mavenProFontFamily
 fun ComicCarousel(
     serie: String,
     comics: List<Comic>,
-    onComicClicked: (List<String>) -> Unit
+    onComicClicked: (List<String>, Int) -> Unit,
+    onFavoriteClicked: (List<String>, Comic) -> Unit
 ) {
     Column {
         Text(
@@ -47,7 +49,12 @@ fun ComicCarousel(
                 val comic = comics[index]
                 ComicCard(
                     comic = comic,
-                    onComicClicked = { onComicClicked(comic.charactersUrl) }
+                    onComicClicked = {
+                        onComicClicked(comic.charactersUrl, comic.id)
+                    },
+                    onFavoriteClicked = {
+                        onFavoriteClicked(comic.charactersUrl, comic)
+                    }
                 )
                 Spacer(modifier = Modifier.width(Dimens.default))
             }

@@ -3,9 +3,8 @@ package com.example.common.data.service.remote
 import com.example.common.BuildConfig
 import com.example.common.data.mapper.toCharacter
 import com.example.common.data.mapper.toComicList
-import com.example.common.data.model.CharacterDataResponse
-import com.example.common.data.model.ComicsDataResponse
-import com.example.common.data.model.RequestState
+import com.example.common.data.model.response.CharacterDataResponse
+import com.example.common.data.model.response.ComicsDataResponse
 import com.example.common.data.util.Consts.API_KEY
 import com.example.common.data.util.Consts.BASE_URL
 import com.example.common.data.util.Consts.COMICS
@@ -28,33 +27,26 @@ import kotlinx.coroutines.withContext
 class MarvelComicsApiServiceImpl(
     private val httpClient: HttpClient
 ) : MarvelComicsApiService {
-    override suspend fun getComics(): RequestState<List<Comic>> {
-        return runCatching {
-            val url = BASE_URL.plus(COMICS)
-            val request = insertDefaultParameters(url)
+    override suspend fun getComics(): List<Comic> {
+        val url = BASE_URL.plus(COMICS)
+        val request = insertDefaultParameters(url)
 
-            val response = request.body<ComicsDataResponse>()
+        val response = request.body<ComicsDataResponse>()
 
-            RequestState.Success(response.toComicList())
-        }.getOrElse {
-            RequestState.Error("")
-        }
+        return response.toComicList()
     }
 
-    override suspend fun getCharactersFromComic(charactersUrl: List<String>): RequestState<List<Character>> {
+    override suspend fun getCharactersFromComic(charactersUrl: List<String>): List<Character> {
         return withContext(Dispatchers.IO) {
-            runCatching {
-                val charactersList = charactersUrl.map { url ->
-                    async {
-                        val request = insertDefaultParameters(url = url)
-                        val response = request.body<CharacterDataResponse>()
-                        response.toCharacter()
-                    }
-                }.awaitAll()
-                RequestState.Success(charactersList)
-            }.getOrElse {
-                RequestState.Error("")
-            }
+            val charactersList = charactersUrl.map { url ->
+                async {
+                    val request = insertDefaultParameters(url = url)
+                    val response = request.body<CharacterDataResponse>()
+                    response.toCharacter()
+                }
+            }.awaitAll()
+
+            charactersList
         }
     }
 

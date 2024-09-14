@@ -2,14 +2,14 @@ package com.example.comic.presentation.screen
 
 import androidx.lifecycle.viewModelScope
 import com.example.comic.presentation.util.DefaultPaginator
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.domain.model.Character
-import com.example.common.domain.usecase.GetCharacterUseCaseImpl
+import com.example.common.domain.usecase.GetCharactersPaginationUseCaseImpl
 import com.example.common.presentation.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class ComicScreenViewModel(
-    private val getCharactersFromComicUseCase: GetCharacterUseCaseImpl
+    private val getCharactersFromComicUseCase: GetCharactersPaginationUseCaseImpl
 ) :
     BaseViewModel<ComicScreenContract.Event, ComicScreenContract.State, ComicScreenContract.Effect>() {
     override fun setInitialState() = ComicScreenContract.State()
@@ -21,11 +21,16 @@ class ComicScreenViewModel(
                 copy(isLoading = it)
             }
         },
-        onRequest = { nextPage ->
-            fetchCharacters(nextPage, 8)
+        onRequest = { nextPage, charactersUrl, comicId ->
+            fetchCharacters(
+                nextPage,
+                PAGE_SIZE,
+                charactersUrl,
+                comicId
+            )
         },
         getNextKey = {
-            currentState.page + 1
+            currentState.page + ONE
         },
         onSuccess = { items, newKey ->
             setState {
@@ -46,25 +51,24 @@ class ComicScreenViewModel(
     override fun handleEvents(event: ComicScreenContract.Event) {
         viewModelScope.launch {
             when (event) {
-                is ComicScreenContract.Event.SaveCharactersUrl -> {
-                    setState { copy(charactersUrl = event.charactersUrl) }
-                    loadNextItems()
-                }
-
                 is ComicScreenContract.Event.LoadNextItems -> {
-                    loadNextItems()
+                    paginator.loadNextItems(event.charactersUrl, event.comicId)
                 }
             }
         }
     }
 
-    private fun loadNextItems() {
-        viewModelScope.launch {
-            paginator.loadNextItems()
-        }
+    private suspend fun fetchCharacters(
+        page: Int,
+        pageSize: Int,
+        charactersUrl: List<String>,
+        comicId: Int
+    ): RequestState<List<Character>> {
+        return getCharactersFromComicUseCase(page, pageSize, charactersUrl, comicId)
     }
 
-    private suspend fun fetchCharacters(page: Int, pageSize: Int): RequestState<List<Character>> {
-        return getCharactersFromComicUseCase(currentState.charactersUrl, page, pageSize)
+    private companion object {
+        const val PAGE_SIZE = 8
+        const val ONE = 1
     }
 }

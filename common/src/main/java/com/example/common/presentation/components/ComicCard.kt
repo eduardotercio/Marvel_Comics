@@ -1,4 +1,4 @@
-package com.example.home.presentation.components
+package com.example.common.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +38,13 @@ import com.example.designsystem.theme.mavenProFontFamily
 @Composable
 fun ComicCard(
     comic: Comic,
-    onComicClicked: () -> Unit
+    onComicClicked: () -> Unit,
+    onFavoriteClicked: () -> Unit
 ) {
     val favoriteUncheckedId = commonDrawable.ic_favorite_unchecked
     val favoriteCheckedId = commonDrawable.ic_favorite_checked
 
-    var iconId by remember {
+    val iconId by remember(comic) {
         mutableIntStateOf(
             if (comic.isFavorite) favoriteCheckedId
             else favoriteUncheckedId
@@ -86,11 +86,7 @@ fun ComicCard(
                 .padding(top = Dimens.smallAlt, end = Dimens.default)
                 .size(Dimens.mediumAlt)
                 .clickable(interactionSource = null, indication = null) {
-                    iconId = if (iconId == favoriteCheckedId) {
-                        favoriteUncheckedId
-                    } else {
-                        favoriteCheckedId
-                    }
+                    onFavoriteClicked.invoke()
                 }
         )
     }

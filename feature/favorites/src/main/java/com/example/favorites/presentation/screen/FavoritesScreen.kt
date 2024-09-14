@@ -1,16 +1,20 @@
-package com.example.home.presentation.screen
+package com.example.favorites.presentation.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,25 +22,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.common.presentation.components.ComicCard
 import com.example.common.presentation.components.CustomDialog
 import com.example.common.presentation.components.CustomTopAppBar
 import com.example.common.presentation.model.Route
 import com.example.common.presentation.util.commonString
 import com.example.designsystem.dimens.Dimens
 import com.example.designsystem.theme.designSystemThemePalette
-import com.example.home.presentation.components.ComicCarousel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
-    val viewModel = koinViewModel<HomeScreenViewModel>()
-    val state = viewModel.state.collectAsStateWithLifecycle().value
-    val comics = state.comics
-    val seriesList by remember(comics) {
-        mutableStateOf(comics.map { it.series }.toSet().toList())
-    }
+fun FavoritesScreen(navController: NavController) {
+
+    val viewModel = koinViewModel<FavoritesScreenViewModel>()
+    val state = viewModel.state.collectAsState().value
+    val comics = state.favoriteComics
+
     var showDialog by remember {
         mutableStateOf(false)
     }
@@ -44,16 +46,12 @@ fun HomeScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is HomeScreenContract.Effect.NavigateToComicScreen -> {
+                is FavoritesScreenContract.Effect.NavigateToComicScreen -> {
                     navController.navigate(Route.Comic(effect.charactersUrl, effect.comicId))
                 }
 
-                is HomeScreenContract.Effect.OpenFavoriteDialog -> {
+                is FavoritesScreenContract.Effect.OpenFavoriteDialog -> {
                     showDialog = true
-                }
-
-                is HomeScreenContract.Effect.SnackbarErrorFindingComics -> {
-
                 }
             }
         }
@@ -63,11 +61,7 @@ fun HomeScreen(navController: NavController) {
         CustomDialog(
             onCancelClicked = { showDialog = false },
             onContinueClicked = {
-                if (state.lastComicClickedOnFavorite.isFavorite) {
-                    viewModel.setEvent(HomeScreenContract.Event.OnRemoveFavoriteComic)
-                } else {
-                    viewModel.setEvent(HomeScreenContract.Event.OnConfirmFavoriteComic)
-                }
+                viewModel.setEvent(FavoritesScreenContract.Event.OnRemoveFavoriteComic)
                 showDialog = false
             },
             isFavorite = state.lastComicClickedOnFavorite.isFavorite
@@ -76,7 +70,7 @@ fun HomeScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            CustomTopAppBar(stringResource(id = commonString.marvel_comics))
+            CustomTopAppBar(label = stringResource(id = commonString.favorites_comics))
         }
     ) { paddingValues ->
         if (state.isLoading) {
@@ -105,38 +99,46 @@ fun HomeScreen(navController: NavController) {
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.height(Dimens.big))
-                LazyColumn(
+                LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
+                        .padding(paddingValues),
+                    horizontalArrangement = Arrangement.Center,
+                    columns = GridCells.Fixed(2)
                 ) {
                     items(
-                        count = seriesList.size,
-                        key = { seriesList[it] }
+                        count = comics.size,
+                        key = {
+                            comics[it].id
+                        }
                     ) { index ->
-                        val series = seriesList[index]
-                        ComicCarousel(
-                            serie = series,
-                            comics = comics.filter { it.series == series },
-                            onComicClicked = { charactersUrl, comicId ->
-                                viewModel.setEvent(
-                                    HomeScreenContract.Event.OnComicClicked(
-                                        charactersUrl,
-                                        comicId
+                        val comic = comics[index]
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Spacer(modifier = Modifier.height(Dimens.default))
+                            ComicCard(
+                                comic = comic,
+                                onComicClicked = {
+                                    viewModel.setEvent(
+                                        FavoritesScreenContract.Event.OnComicClicked(
+                                            comic.charactersUrl,
+                                            comic.id
+                                        )
                                     )
-                                )
-                            },
-                            onFavoriteClicked = { charactersUrl, comic ->
-                                viewModel.setEvent(
-                                    HomeScreenContract.Event.OnFavoriteIconClicked(
-                                        charactersUrl,
-                                        comic
+                                },
+                                onFavoriteClicked = {
+                                    viewModel.setEvent(
+                                        FavoritesScreenContract.Event.OnFavoriteIconClicked(
+                                            comic.charactersUrl,
+                                            comic
+                                        )
                                     )
-                                )
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(Dimens.big))
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(Dimens.default))
+                        }
                     }
                 }
             }

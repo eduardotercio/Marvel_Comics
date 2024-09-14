@@ -1,13 +1,12 @@
-package com.example.home.presentation.screen
+package com.example.favorites.presentation.screen
 
 import com.example.common.domain.model.Comic
 import com.example.common.presentation.base.UiEffect
 import com.example.common.presentation.base.UiEvent
 import com.example.common.presentation.base.UiState
 
-object HomeScreenContract {
+object FavoritesScreenContract {
     interface Event : UiEvent {
-
         data class OnComicClicked(
             val charactersUrl: List<String>,
             val comicId: Int
@@ -17,8 +16,6 @@ object HomeScreenContract {
             val charactersUrl: List<String>,
             val comic: Comic
         ) : Event
-
-        data object OnConfirmFavoriteComic : Event
 
         data object OnRemoveFavoriteComic : Event
     }
@@ -30,12 +27,10 @@ object HomeScreenContract {
         ) : Effect
 
         data object OpenFavoriteDialog : Effect
-
-        data object SnackbarErrorFindingComics : Effect
     }
 
     data class State(
-        val comics: List<Comic> = listOf(),
+        val favoriteComics: List<Comic> = emptyList(),
         val isLoading: Boolean = true,
         val lastComicClickedOnFavorite: Comic = Comic(),
         val charUrlsLastComicClickedOnFavorite: List<String> = listOf()

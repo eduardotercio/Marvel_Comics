@@ -43,15 +43,18 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ComicScreen(
     navController: NavController,
-    charactersUrl: List<String>
+    charactersUrl: List<String>,
+    comicId: Int
 ) {
-
     val viewModel = koinViewModel<ComicScreenViewModel>()
     val state = viewModel.state.collectAsState().value
     val characters = state.characters
+    val comicHasCharacters = charactersUrl.isNotEmpty()
 
     LaunchedEffect(Unit) {
-        viewModel.setEvent(ComicScreenContract.Event.SaveCharactersUrl(charactersUrl))
+        if (comicHasCharacters) {
+            viewModel.setEvent(ComicScreenContract.Event.LoadNextItems(charactersUrl, comicId))
+        }
     }
 
     Scaffold(
@@ -63,12 +66,12 @@ fun ComicScreen(
             )
         }
     ) { paddingValues ->
-        if (charactersUrl.isEmpty()) {
+        if (!comicHasCharacters) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                Text(text = "no character available", modifier = Modifier.align(Alignment.Center))
+                Text(text = stringResource(id = commonString.no_character_available), modifier = Modifier.align(Alignment.Center))
             }
         } else {
             LazyVerticalGrid(
@@ -86,7 +89,12 @@ fun ComicScreen(
                 ) { index ->
                     val character = characters[index]
                     if (index >= characters.size - 1 && !state.endReached && !state.isLoading) {
-                        viewModel.setEvent(ComicScreenContract.Event.LoadNextItems)
+                        viewModel.setEvent(
+                            ComicScreenContract.Event.LoadNextItems(
+                                charactersUrl,
+                                comicId
+                            )
+                        )
                     }
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

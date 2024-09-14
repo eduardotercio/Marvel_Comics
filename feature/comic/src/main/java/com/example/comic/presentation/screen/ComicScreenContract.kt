@@ -7,11 +7,10 @@ import com.example.common.presentation.base.UiState
 
 object ComicScreenContract {
     interface Event : UiEvent {
-        data class SaveCharactersUrl(
-            val charactersUrl: List<String>
+        data class LoadNextItems(
+            val charactersUrl: List<String>,
+            val comicId: Int
         ) : Event
-
-        data object LoadNextItems : Event
     }
 
     interface Effect : UiEffect {
@@ -19,7 +18,6 @@ object ComicScreenContract {
     }
 
     data class State(
-        val charactersUrl: List<String> = listOf(),
         val characters: List<Character> = listOf(),
         val isLoading: Boolean = false,
         val endReached: Boolean = false,

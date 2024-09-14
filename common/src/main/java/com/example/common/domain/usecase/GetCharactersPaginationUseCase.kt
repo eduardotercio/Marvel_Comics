@@ -1,12 +1,13 @@
 package com.example.common.domain.usecase
 
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.domain.model.Character
 
-interface GetCharacterUseCase {
+interface GetCharactersPaginationUseCase {
     suspend operator fun invoke(
-        charactersUrl: List<String>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        charactersUrl: List<String>,
+        comicId: Int
     ): RequestState<List<Character>>
 }

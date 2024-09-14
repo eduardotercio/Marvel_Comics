@@ -6,4 +6,13 @@
     <string name="marvel_comics">Marvel Comics</string>
     <string name="marvel_characters">Characters</string>
     <string name="favorites_comics">Favorites Comics</string>
+    <string name="no_character_available">"No character available"</string>
+    <string name="no_comic_available">"No comic available"</string>
+    <string name="cancel_dialog">"Cancel"</string>
+    <string name="continue_dialog">"Continue"</string>
+    <string name="dialog_close_icon">"Dialog close icon"</string>
+    <string name="favorite">"Favorite"</string>
+    <string name="unfavorite">"Unfavorite"</string>
+    <string name="favorite_dialog_description">"Favoriting this comic will download it, do you want to continue?"</string>
+    <string name="unfavorite_dialog_description">"Unfavoriting this comic will remove it from download, do you want to continue?"</string>
 </resources>
