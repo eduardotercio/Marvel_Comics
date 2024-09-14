@@ -71,7 +71,7 @@ fun ComicScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                Text(text = "no character available", modifier = Modifier.align(Alignment.Center))
+                Text(text = stringResource(id = commonString.no_character_available), modifier = Modifier.align(Alignment.Center))
             }
         } else {
             LazyVerticalGrid(

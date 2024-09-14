@@ -1,5 +1,7 @@
 package com.example.common.domain.di
 
+import com.example.common.domain.usecase.DeleteComicUseCase
+import com.example.common.domain.usecase.DeleteComicUseCaseImpl
 import com.example.common.domain.usecase.GetAllCharactersFromComicUseCase
 import com.example.common.domain.usecase.GetAllCharactersFromComicUseCaseImpl
 import com.example.common.domain.usecase.GetCharactersPaginationUseCase
@@ -17,4 +19,5 @@ val commonDomainModule = module {
     factoryOf(::GetCharactersPaginationUseCaseImpl) bind GetCharactersPaginationUseCase::class
     factoryOf(::SaveComicUseCaseImpl) bind SaveComicUseCase::class
     factoryOf(::GetAllCharactersFromComicUseCaseImpl) bind GetAllCharactersFromComicUseCase::class
+    factoryOf(::DeleteComicUseCaseImpl) bind DeleteComicUseCase::class
 }

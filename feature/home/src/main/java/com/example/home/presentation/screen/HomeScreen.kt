@@ -58,8 +58,12 @@ fun HomeScreen(navController: NavController) {
         CustomDialog(
             onCancelClicked = { showDialog = false },
             onContinueClicked = {
+                if (state.lastComicClickedOnFavorite.isFavorite) {
+                    viewModel.setEvent(HomeScreenContract.Event.OnRemoveFavoriteComic)
+                } else {
+                    viewModel.setEvent(HomeScreenContract.Event.OnConfirmFavoriteComic)
+                }
                 showDialog = false
-                viewModel.setEvent(HomeScreenContract.Event.OnConfirmFavoriteComic)
             }
         )
     }

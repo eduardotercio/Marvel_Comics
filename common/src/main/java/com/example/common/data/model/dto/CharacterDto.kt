@@ -3,14 +3,13 @@ package com.example.common.data.model.dto
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-
-data class CharacterDto(
+internal class CharacterDto : RealmObject {
     @PrimaryKey
-    var id: Int = 0,
+    var id: Int = 0
 
-    val name: String = "",
+    var name: String = ""
 
-    val imageUrl: String = "",
+    var imageUrl: String = ""
 
-    val characterUrl: String = ""
-) : RealmObject
+    var characterUrl: String = ""
+}

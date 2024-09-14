@@ -14,8 +14,10 @@ class ComicsRepositoryImpl(
     private val apiService: MarvelComicsApiService,
     private val mongoDbService: MongoDbService
 ) : ComicsRepository {
-    override suspend fun getComics(getFromLocal: Boolean): RequestState<List<Comic>> {
+    override suspend fun getComics(onlyLocal: Boolean): RequestState<List<Comic>> {
         return withContext(Dispatchers.IO) {
+            if (onlyLocal) return@withContext mongoDbService.getComics()
+
             val localDeferred = async { mongoDbService.getComics() }
             val apiDeferred = async { apiService.getComics() }
 
@@ -43,6 +45,12 @@ class ComicsRepositoryImpl(
     override suspend fun saveComic(comic: Comic, characters: List<Character>) {
         return withContext(Dispatchers.IO) {
             mongoDbService.saveComic(comic, characters)
+        }
+    }
+
+    override suspend fun deleteComic(comic: Comic) {
+        withContext(Dispatchers.IO) {
+            mongoDbService.deleteComic(comic)
         }
     }
 }

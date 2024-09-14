@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +44,7 @@ fun ComicCard(
     val favoriteUncheckedId = commonDrawable.ic_favorite_unchecked
     val favoriteCheckedId = commonDrawable.ic_favorite_checked
 
-    var iconId by remember {
+    val iconId by remember(comic) {
         mutableIntStateOf(
             if (comic.isFavorite) favoriteCheckedId
             else favoriteUncheckedId
@@ -88,11 +87,11 @@ fun ComicCard(
                 .size(Dimens.mediumAlt)
                 .clickable(interactionSource = null, indication = null) {
                     onFavoriteClicked.invoke()
-                    iconId = if (iconId == favoriteCheckedId) {
-                        favoriteUncheckedId
-                    } else {
-                        favoriteCheckedId
-                    }
+//                    iconId = if (iconId == favoriteCheckedId) {
+//                        favoriteUncheckedId
+//                    } else {
+//                        favoriteCheckedId
+//                    }
                 }
         )
     }

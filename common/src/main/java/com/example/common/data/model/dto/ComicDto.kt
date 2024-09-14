@@ -5,19 +5,19 @@ import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-data class ComicDto(
+internal class ComicDto : RealmObject {
     @PrimaryKey
-    var id: Int = 0,
+    var id: Int = 0
 
-    val title: String = "",
+    var title: String = ""
 
-    val series: String = "",
+    var series: String = ""
 
-    val imageUrl: String = "",
+    var imageUrl: String = ""
 
-    val charactersAvailable: Int = 0,
+    var charactersAvailable: Int = 0
 
-    val characters: RealmList<CharacterDto> = realmListOf(),
+    var charactersList: RealmList<CharacterDto> = realmListOf()
 
-    val isFavorite: Boolean = false
-) : RealmObject
+    var isFavorite: Boolean = false
+}

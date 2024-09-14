@@ -11,4 +11,6 @@ interface MongoDbService {
     suspend fun getComics(): RequestState<List<Comic>>
 
     suspend fun getCharactersFromComic(comicId: Int): RequestState<List<Character>>
+
+    suspend fun deleteComic(comic: Comic)
 }

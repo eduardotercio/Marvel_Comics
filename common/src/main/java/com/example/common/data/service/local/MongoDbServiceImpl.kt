@@ -44,13 +44,24 @@ class MongoDbServiceImpl(
             if (comic == null) {
                 RequestState.Success(emptyList())
             } else {
-                val characterList = comic.characters.asFlow().firstOrNull()?.list?.map {
+                val characterList = comic.charactersList.asFlow().firstOrNull()?.list?.map {
                     it.toCharacter()
                 }
                 RequestState.Success(characterList ?: emptyList())
             }
         }.getOrElse {
             RequestState.Error("Error getting characters, try again later.")
+        }
+    }
+
+    override suspend fun deleteComic(comic: Comic) {
+        realm.writeBlocking {
+            val localComic = this.query(
+                clazz = ComicDto::class,
+                query = "id == $0 LIMIT(1)", comic.id
+            ).first().find()
+
+            localComic?.let { delete(it) }
         }
     }
 }

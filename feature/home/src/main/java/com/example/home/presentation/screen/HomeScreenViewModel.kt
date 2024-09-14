@@ -3,6 +3,7 @@ package com.example.home.presentation.screen
 import androidx.lifecycle.viewModelScope
 import com.example.common.data.model.RequestState
 import com.example.common.domain.model.Comic
+import com.example.common.domain.usecase.DeleteComicUseCase
 import com.example.common.domain.usecase.GetAllCharactersFromComicUseCase
 import com.example.common.domain.usecase.GetComicsUseCase
 import com.example.common.domain.usecase.SaveComicUseCase
@@ -14,7 +15,8 @@ import kotlinx.coroutines.withContext
 class HomeScreenViewModel(
     private val getComicsUseCase: GetComicsUseCase,
     private val saveComicUseCase: SaveComicUseCase,
-    private val getAllCharactersFromComic: GetAllCharactersFromComicUseCase
+    private val getAllCharactersFromComic: GetAllCharactersFromComicUseCase,
+    private val deleteComicUseCase: DeleteComicUseCase
 ) :
     BaseViewModel<HomeScreenContract.Event, HomeScreenContract.State, HomeScreenContract.Effect>() {
     override fun setInitialState() = HomeScreenContract.State()
@@ -50,6 +52,10 @@ class HomeScreenViewModel(
 
                 is HomeScreenContract.Event.OnConfirmFavoriteComic -> {
                     saveComic()
+                }
+
+                is HomeScreenContract.Event.OnRemoveFavoriteComic -> {
+                    deleteComic()
                 }
             }
         }
@@ -101,6 +107,15 @@ class HomeScreenViewModel(
                     comic = currentState.lastComicClickedOnFavorite,
                     characters = response.data
                 )
+                setState {
+                    copy(
+                        comics = currentState.comics.map { comic ->
+                            if (comic.id == currentState.lastComicClickedOnFavorite.id) {
+                                comic.copy(isFavorite = true)
+                            } else comic
+                        }
+                    )
+                }
             }
 
             is RequestState.Error -> {
@@ -108,6 +123,19 @@ class HomeScreenViewModel(
                     HomeScreenContract.Effect.SnackbarErrorFindingComics
                 }
             }
+        }
+    }
+
+    private suspend fun deleteComic() {
+        deleteComicUseCase(currentState.lastComicClickedOnFavorite)
+        setState {
+            copy(
+                comics = currentState.comics.map { comic ->
+                    if (comic.id == currentState.lastComicClickedOnFavorite.id) {
+                        comic.copy(isFavorite = false)
+                    } else comic
+                }
+            )
         }
     }
 }

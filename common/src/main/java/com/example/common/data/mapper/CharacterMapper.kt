@@ -15,16 +15,16 @@ fun CharacterDataResponse.toCharacter(): Character {
     )
 }
 
-fun Character.toCharacterDto(): CharacterDto {
-    return CharacterDto(
-        id = this.id,
-        name = this.name,
-        imageUrl = this.imageUrl,
-        characterUrl = this.characterUrl
-    )
+internal fun Character.toCharacterDto(): CharacterDto {
+    return CharacterDto().apply {
+        id = this@toCharacterDto.id
+        name = this@toCharacterDto.name
+        imageUrl = this@toCharacterDto.imageUrl
+        characterUrl = this@toCharacterDto.characterUrl
+    }
 }
 
-fun CharacterDto.toCharacter(): Character {
+internal fun CharacterDto.toCharacter(): Character {
     return Character(
         id = this.id,
         name = this.name,

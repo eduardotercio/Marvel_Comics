@@ -6,4 +6,6 @@
     <string name="marvel_comics">Marvel Comics</string>
     <string name="marvel_characters">Characters</string>
     <string name="favorites_comics">Favorites Comics</string>
+    <string name="no_character_available">"No character available"</string>
+    <string name="no_comic_available">"No comic available"</string>
 </resources>

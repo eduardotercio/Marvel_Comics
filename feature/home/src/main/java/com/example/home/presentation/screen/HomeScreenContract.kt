@@ -20,6 +20,8 @@ object HomeScreenContract {
         ) : Event
 
         data object OnConfirmFavoriteComic : Event
+
+        data object OnRemoveFavoriteComic : Event
     }
 
     interface Effect : UiEffect {

@@ -23,26 +23,26 @@ fun ComicsDataResponse.toComicList(): List<Comic> {
     return comicsList
 }
 
-fun Comic.toComicDto(characters: List<Character>): ComicDto {
-    return ComicDto(
-        id = this.id,
-        title = this.title,
-        series = this.series,
-        imageUrl = this.imageUrl,
-        charactersAvailable = this.charactersAvailable,
-        characters = characters.map { it.toCharacterDto() }.toRealmList(),
-        isFavorite = this.isFavorite
-    )
+internal fun Comic.toComicDto(characters: List<Character>): ComicDto {
+    return ComicDto().apply {
+        id = this@toComicDto.id
+        title = this@toComicDto.title
+        series = this@toComicDto.series
+        imageUrl = this@toComicDto.imageUrl
+        charactersAvailable = this@toComicDto.charactersAvailable
+        charactersList = characters.map { it.toCharacterDto() }.toRealmList()
+        isFavorite = this@toComicDto.isFavorite
+    }
 }
 
-fun ComicDto.toComic(): Comic {
+internal fun ComicDto.toComic(): Comic {
     return Comic(
         id = this.id,
         title = this.title,
         series = this.series,
         imageUrl = this.imageUrl,
         charactersAvailable = this.charactersAvailable,
-        charactersUrl = this.characters.map { it.characterUrl },
+        charactersUrl = this.charactersList.map { it.characterUrl },
         isFavorite = this.isFavorite
     )
 }
