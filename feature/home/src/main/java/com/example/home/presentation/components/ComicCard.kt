@@ -39,7 +39,8 @@ import com.example.designsystem.theme.mavenProFontFamily
 @Composable
 fun ComicCard(
     comic: Comic,
-    onComicClicked: () -> Unit
+    onComicClicked: () -> Unit,
+    onFavoriteClicked: () -> Unit
 ) {
     val favoriteUncheckedId = commonDrawable.ic_favorite_unchecked
     val favoriteCheckedId = commonDrawable.ic_favorite_checked
@@ -86,6 +87,7 @@ fun ComicCard(
                 .padding(top = Dimens.smallAlt, end = Dimens.default)
                 .size(Dimens.mediumAlt)
                 .clickable(interactionSource = null, indication = null) {
+                    onFavoriteClicked.invoke()
                     iconId = if (iconId == favoriteCheckedId) {
                         favoriteUncheckedId
                     } else {

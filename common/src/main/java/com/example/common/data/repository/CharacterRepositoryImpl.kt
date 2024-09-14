@@ -10,12 +10,25 @@ class CharacterRepositoryImpl(
     private val apiService: MarvelComicsApiService,
     private val mongoDbService: MongoDbService
 ) : CharacterRepository {
-    override suspend fun getCharactersFromComic(
+    override suspend fun getCharactersPagination(
         charactersUrl: List<String>,
         comicId: Int,
         range: IntRange
     ): RequestState<List<Character>> {
+        val localResponse = mongoDbService.getCharactersFromComic(comicId)
+        if (localResponse is RequestState.Success && localResponse.data.isNotEmpty()) {
+            return localResponse.apply {
+                data.slice(range)
+            }
+        }
+
         val response = apiService.getCharactersFromComic(charactersUrl.slice(range))
         return response
+    }
+
+    override suspend fun getAllCharactersFromComic(
+        charactersUrl: List<String>
+    ): RequestState<List<Character>> {
+        return apiService.getCharactersFromComic(charactersUrl)
     }
 }

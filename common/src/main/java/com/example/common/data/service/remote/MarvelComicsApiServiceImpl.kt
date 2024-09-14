@@ -37,7 +37,7 @@ class MarvelComicsApiServiceImpl(
 
             RequestState.Success(response.toComicList())
         }.getOrElse {
-            RequestState.Error("")
+            RequestState.Error("Error getting comics, try again later.")
         }
     }
 
@@ -53,7 +53,7 @@ class MarvelComicsApiServiceImpl(
                 }.awaitAll()
                 RequestState.Success(charactersList)
             }.getOrElse {
-                RequestState.Error("")
+                RequestState.Error("Error getting characters, try again later.")
             }
         }
     }

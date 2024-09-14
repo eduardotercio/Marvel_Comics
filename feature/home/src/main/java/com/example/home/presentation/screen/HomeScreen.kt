@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,6 +21,7 @@ import com.example.common.presentation.model.Route
 import com.example.common.presentation.util.commonString
 import com.example.designsystem.dimens.Dimens
 import com.example.home.presentation.components.ComicCarousel
+import com.example.home.presentation.components.CustomDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -28,6 +31,37 @@ fun HomeScreen(navController: NavController) {
     val comics = state.comics
     val seriesList by remember(comics) {
         mutableStateOf(comics.map { it.series }.toSet().toList())
+    }
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is HomeScreenContract.Effect.NavigateToComicScreen -> {
+                    navController.navigate(Route.Comic(effect.charactersUrl, effect.comicId))
+                }
+
+                is HomeScreenContract.Effect.OpenFavoriteDialog -> {
+                    showDialog = true
+                }
+
+                is HomeScreenContract.Effect.SnackbarErrorFindingComics -> {
+
+                }
+            }
+        }
+    }
+
+    if (showDialog) {
+        CustomDialog(
+            onCancelClicked = { showDialog = false },
+            onContinueClicked = {
+                showDialog = false
+                viewModel.setEvent(HomeScreenContract.Event.OnConfirmFavoriteComic)
+            }
+        )
     }
 
     Scaffold(
@@ -50,7 +84,20 @@ fun HomeScreen(navController: NavController) {
                     serie = series,
                     comics = comics.filter { it.series == series },
                     onComicClicked = { charactersUrl, comicId ->
-                        navController.navigate(Route.Comic(charactersUrl, comicId))
+                        viewModel.setEvent(
+                            HomeScreenContract.Event.OnComicClicked(
+                                charactersUrl,
+                                comicId
+                            )
+                        )
+                    },
+                    onFavoriteClicked = { charactersUrl, comic ->
+                        viewModel.setEvent(
+                            HomeScreenContract.Event.OnFavoriteIconClicked(
+                                charactersUrl,
+                                comic
+                            )
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.height(Dimens.big))

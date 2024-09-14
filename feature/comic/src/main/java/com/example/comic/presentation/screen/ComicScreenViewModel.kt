@@ -4,12 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.comic.presentation.util.DefaultPaginator
 import com.example.common.data.model.RequestState
 import com.example.common.domain.model.Character
-import com.example.common.domain.usecase.GetCharacterUseCaseImpl
+import com.example.common.domain.usecase.GetCharactersPaginationUseCaseImpl
 import com.example.common.presentation.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class ComicScreenViewModel(
-    private val getCharactersFromComicUseCase: GetCharacterUseCaseImpl
+    private val getCharactersFromComicUseCase: GetCharactersPaginationUseCaseImpl
 ) :
     BaseViewModel<ComicScreenContract.Event, ComicScreenContract.State, ComicScreenContract.Effect>() {
     override fun setInitialState() = ComicScreenContract.State()

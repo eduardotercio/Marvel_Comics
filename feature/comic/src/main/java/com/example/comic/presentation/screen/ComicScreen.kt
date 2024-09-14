@@ -46,13 +46,15 @@ fun ComicScreen(
     charactersUrl: List<String>,
     comicId: Int
 ) {
-
     val viewModel = koinViewModel<ComicScreenViewModel>()
     val state = viewModel.state.collectAsState().value
     val characters = state.characters
+    val comicHasCharacters = charactersUrl.isNotEmpty()
 
     LaunchedEffect(Unit) {
-        viewModel.setEvent(ComicScreenContract.Event.LoadNextItems(charactersUrl, comicId))
+        if (comicHasCharacters) {
+            viewModel.setEvent(ComicScreenContract.Event.LoadNextItems(charactersUrl, comicId))
+        }
     }
 
     Scaffold(
@@ -64,7 +66,7 @@ fun ComicScreen(
             )
         }
     ) { paddingValues ->
-        if (charactersUrl.isEmpty()) {
+        if (!comicHasCharacters) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

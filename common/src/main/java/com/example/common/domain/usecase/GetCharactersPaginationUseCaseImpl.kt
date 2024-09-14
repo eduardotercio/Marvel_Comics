@@ -7,9 +7,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-class GetCharacterUseCaseImpl(
+class GetCharactersPaginationUseCaseImpl(
     private val repository: CharacterRepository
-) : GetCharacterUseCase {
+) : GetCharactersPaginationUseCase {
     override suspend fun invoke(
         page: Int,
         pageSize: Int,
@@ -24,9 +24,8 @@ class GetCharacterUseCaseImpl(
             if (charactersUrl.size < lastIndex) lastIndex = charactersUrl.size - 1
 
             val range = IntRange(startingIndex, lastIndex)
-
             if (startingIndex <= charactersUrl.size) {
-                repository.getCharactersFromComic(
+                repository.getCharactersPagination(
                     charactersUrl,
                     comicId,
                     range

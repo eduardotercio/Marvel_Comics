@@ -3,7 +3,7 @@ package com.example.common.domain.usecase
 import com.example.common.data.model.RequestState
 import com.example.common.domain.model.Character
 
-interface GetCharacterUseCase {
+interface GetCharactersPaginationUseCase {
     suspend operator fun invoke(
         page: Int,
         pageSize: Int,

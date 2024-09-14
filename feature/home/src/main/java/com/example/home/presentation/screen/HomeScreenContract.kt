@@ -8,13 +8,34 @@ import com.example.common.presentation.base.UiState
 object HomeScreenContract {
     interface Event : UiEvent {
         data object FetchComics : Event
+
+        data class OnComicClicked(
+            val charactersUrl: List<String>,
+            val comicId: Int
+        ) : Event
+
+        data class OnFavoriteIconClicked(
+            val charactersUrl: List<String>,
+            val comic: Comic
+        ) : Event
+
+        data object OnConfirmFavoriteComic : Event
     }
 
     interface Effect : UiEffect {
-        data object SnackbarErrorFindingComics: Effect
+        data class NavigateToComicScreen(
+            val charactersUrl: List<String>,
+            val comicId: Int
+        ) : Effect
+
+        data object OpenFavoriteDialog : Effect
+
+        data object SnackbarErrorFindingComics : Effect
     }
 
     data class State(
-        val comics: List<Comic> = listOf()
+        val comics: List<Comic> = listOf(),
+        val lastComicClickedOnFavorite: Comic = Comic(),
+        val charUrlsLastComicClickedOnFavorite: List<String> = listOf()
     ) : UiState
 }

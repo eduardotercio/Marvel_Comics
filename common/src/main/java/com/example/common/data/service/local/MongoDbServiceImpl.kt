@@ -49,7 +49,6 @@ class MongoDbServiceImpl(
                 }
                 RequestState.Success(characterList ?: emptyList())
             }
-
         }.getOrElse {
             RequestState.Error("Error getting characters, try again later.")
         }

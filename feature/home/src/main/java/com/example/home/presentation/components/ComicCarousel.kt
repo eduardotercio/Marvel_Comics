@@ -22,7 +22,8 @@ import com.example.designsystem.theme.mavenProFontFamily
 fun ComicCarousel(
     serie: String,
     comics: List<Comic>,
-    onComicClicked: (List<String>, Int) -> Unit
+    onComicClicked: (List<String>, Int) -> Unit,
+    onFavoriteClicked: (List<String>, Comic) -> Unit
 ) {
     Column {
         Text(
@@ -47,7 +48,12 @@ fun ComicCarousel(
                 val comic = comics[index]
                 ComicCard(
                     comic = comic,
-                    onComicClicked = { onComicClicked(comic.charactersUrl, comic.id) }
+                    onComicClicked = {
+                        onComicClicked(comic.charactersUrl, comic.id)
+                    },
+                    onFavoriteClicked = {
+                        onFavoriteClicked(comic.charactersUrl, comic)
+                    }
                 )
                 Spacer(modifier = Modifier.width(Dimens.default))
             }
