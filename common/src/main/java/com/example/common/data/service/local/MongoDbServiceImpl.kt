@@ -3,7 +3,7 @@ package com.example.common.data.service.local
 import com.example.common.data.mapper.toCharacter
 import com.example.common.data.mapper.toComic
 import com.example.common.data.mapper.toComicDto
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.data.model.dto.ComicDto
 import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic

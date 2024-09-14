@@ -106,7 +106,6 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.Center,
                     columns = GridCells.Fixed(2)
                 ) {
-
                     items(
                         count = comics.size,
                         key = {

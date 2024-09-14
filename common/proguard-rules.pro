@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes Serializable, *Annotation*
+-keep class kotlinx.serialization.** { *; }
+-keep class com.example.common.data.model.** { *; }
+-keep class com.example.common.domain.model.** { *; }
+-keep class com.example.common.presentation.model.** { *; }
+

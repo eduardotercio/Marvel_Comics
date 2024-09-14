@@ -1,6 +1,6 @@
 package com.example.common.domain.service.local
 
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
 import kotlinx.coroutines.flow.Flow

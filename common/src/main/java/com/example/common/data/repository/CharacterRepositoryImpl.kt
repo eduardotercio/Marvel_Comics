@@ -1,6 +1,6 @@
 package com.example.common.data.repository
 
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.domain.model.Character
 import com.example.common.domain.repository.CharacterRepository
 import com.example.common.domain.service.local.MongoDbService

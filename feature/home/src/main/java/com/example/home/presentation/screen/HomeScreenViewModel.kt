@@ -1,7 +1,7 @@
 package com.example.home.presentation.screen
 
 import androidx.lifecycle.viewModelScope
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.domain.model.Comic
 import com.example.common.domain.usecase.DeleteComicUseCase
 import com.example.common.domain.usecase.FetchComicsRealTime
@@ -71,14 +71,17 @@ class HomeScreenViewModel(
                 is RequestState.Success -> {
                     setState {
                         copy(
-                            comics = result.data
+                            comics = result.data,
+                            isLoading = false
                         )
                     }
                 }
 
                 is RequestState.Error -> {
-                    setEffect {
-                        HomeScreenContract.Effect.SnackbarErrorFindingComics
+                    setState {
+                        copy(
+                            isLoading = false
+                        )
                     }
                 }
             }
@@ -102,7 +105,7 @@ class HomeScreenViewModel(
 
                 setState {
                     copy(
-                        comics = comics
+                        comics = comics,
                     )
                 }
             }

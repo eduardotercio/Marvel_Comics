@@ -1,6 +1,6 @@
 package com.example.comic.presentation.util
 
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 
 class DefaultPaginator<Key, Item>(
     private val initialKey: Key,

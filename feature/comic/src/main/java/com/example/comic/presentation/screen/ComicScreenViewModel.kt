@@ -2,7 +2,7 @@ package com.example.comic.presentation.screen
 
 import androidx.lifecycle.viewModelScope
 import com.example.comic.presentation.util.DefaultPaginator
-import com.example.common.data.model.RequestState
+import com.example.common.data.util.RequestState
 import com.example.common.domain.model.Character
 import com.example.common.domain.usecase.GetCharactersPaginationUseCaseImpl
 import com.example.common.presentation.base.BaseViewModel

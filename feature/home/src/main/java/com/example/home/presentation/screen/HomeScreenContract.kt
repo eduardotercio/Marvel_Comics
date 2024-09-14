@@ -36,6 +36,7 @@ object HomeScreenContract {
 
     data class State(
         val comics: List<Comic> = listOf(),
+        val isLoading: Boolean = true,
         val lastComicClickedOnFavorite: Comic = Comic(),
         val charUrlsLastComicClickedOnFavorite: List<String> = listOf()
     ) : UiState
