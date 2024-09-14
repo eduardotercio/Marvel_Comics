@@ -1,11 +1,9 @@
 package com.example.favorites.presentation.screen
 
 import androidx.lifecycle.viewModelScope
-import com.example.common.data.model.RequestState
 import com.example.common.domain.model.Comic
 import com.example.common.domain.usecase.DeleteComicUseCase
 import com.example.common.domain.usecase.FetchComicsRealTime
-import com.example.common.domain.usecase.GetComicsUseCase
 import com.example.common.presentation.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -14,7 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FavoritesScreenViewModel(
-    private val getComicsUseCase: GetComicsUseCase,
     private val deleteComicUseCase: DeleteComicUseCase,
     private val fetchComicsRealTime: FetchComicsRealTime
 ) :
@@ -56,25 +53,6 @@ class FavoritesScreenViewModel(
 
                 is FavoritesScreenContract.Event.OnRemoveFavoriteComic -> {
                     deleteComic()
-                }
-            }
-        }
-    }
-
-    private suspend fun fetchComics() {
-        withContext(Dispatchers.Main) {
-            val response = getComicsUseCase(onlyLocal = true)
-            when (response) {
-                is RequestState.Success -> {
-                    setState {
-                        copy(
-                            favoriteComics = response.data
-                        )
-                    }
-                }
-
-                is RequestState.Error -> {
-
                 }
             }
         }

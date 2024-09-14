@@ -8,6 +8,6 @@ class FetchComicsRealTimeImpl(
     private val repository: ComicsRepository
 ) : FetchComicsRealTime {
     override suspend fun invoke(): Flow<List<Comic>> {
-        return repository.fetchComicsRealTime()
+        return repository.fetchLocalComicsRealTime()
     }
 }

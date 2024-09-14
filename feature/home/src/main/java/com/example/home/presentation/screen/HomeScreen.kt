@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.common.presentation.components.CustomDialog
 import com.example.common.presentation.components.CustomTopAppBar
 import com.example.common.presentation.model.Route
 import com.example.common.presentation.util.commonString
 import com.example.designsystem.dimens.Dimens
 import com.example.home.presentation.components.ComicCarousel
-import com.example.common.presentation.components.CustomDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -64,7 +64,8 @@ fun HomeScreen(navController: NavController) {
                     viewModel.setEvent(HomeScreenContract.Event.OnConfirmFavoriteComic)
                 }
                 showDialog = false
-            }
+            },
+            isFavorite = state.lastComicClickedOnFavorite.isFavorite
         )
     }
 

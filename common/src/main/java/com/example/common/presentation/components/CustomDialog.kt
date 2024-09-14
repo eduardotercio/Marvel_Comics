@@ -35,8 +35,10 @@ import com.example.designsystem.theme.mavenProFontFamily
 @Composable
 fun CustomDialog(
     onCancelClicked: () -> Unit,
-    onContinueClicked: () -> Unit
+    onContinueClicked: () -> Unit,
+    isFavorite: Boolean
 ) {
+
     Dialog(onDismissRequest = {}) {
         Box(
             modifier = Modifier
@@ -49,7 +51,11 @@ fun CustomDialog(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = stringResource(id = commonString.favorites),
+                        text = if (isFavorite) {
+                            stringResource(id = commonString.unfavorite)
+                        } else {
+                            stringResource(id = commonString.favorite)
+                        },
                         color = designSystemThemePalette.textPrimary,
                         fontSize = 20.sp.responsiveSp(),
                         fontFamily = mavenProFontFamily,
@@ -71,7 +77,11 @@ fun CustomDialog(
                 }
                 Spacer(modifier = Modifier.height(Dimens.defaultAlt))
                 Text(
-                    text = stringResource(id = commonString.dialog_description),
+                    text = if (isFavorite) {
+                        stringResource(id = commonString.unfavorite_dialog_description)
+                    } else {
+                        stringResource(id = commonString.favorite_dialog_description)
+                    },
                     color = designSystemThemePalette.textSecondary,
                     modifier = Modifier.padding(horizontal = Dimens.small),
                     fontFamily = mavenProFontFamily,

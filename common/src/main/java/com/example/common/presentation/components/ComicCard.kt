@@ -87,11 +87,6 @@ fun ComicCard(
                 .size(Dimens.mediumAlt)
                 .clickable(interactionSource = null, indication = null) {
                     onFavoriteClicked.invoke()
-//                    iconId = if (iconId == favoriteCheckedId) {
-//                        favoriteUncheckedId
-//                    } else {
-//                        favoriteCheckedId
-//                    }
                 }
         )
     }

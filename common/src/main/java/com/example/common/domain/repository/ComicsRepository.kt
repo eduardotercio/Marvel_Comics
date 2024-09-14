@@ -6,9 +6,9 @@ import com.example.common.domain.model.Comic
 import kotlinx.coroutines.flow.Flow
 
 interface ComicsRepository {
-    suspend fun getComics(onlyLocal: Boolean): RequestState<List<Comic>>
+    suspend fun getComicsFromApi(): RequestState<List<Comic>>
 
-    suspend fun fetchComicsRealTime(): Flow<List<Comic>>
+    suspend fun fetchLocalComicsRealTime(): Flow<List<Comic>>
 
     suspend fun saveComic(comic: Comic, characters: List<Character>)
 

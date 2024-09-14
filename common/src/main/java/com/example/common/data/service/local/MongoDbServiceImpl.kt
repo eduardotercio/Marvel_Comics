@@ -9,6 +9,7 @@ import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
 import com.example.common.domain.service.local.MongoDbService
 import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -19,7 +20,7 @@ class MongoDbServiceImpl(
 ) : MongoDbService {
     override suspend fun saveComic(comic: Comic, characters: List<Character>) {
         realm.write {
-            copyToRealm(comic.toComicDto(characters))
+            copyToRealm(comic.toComicDto(characters), UpdatePolicy.ALL)
         }
     }
 

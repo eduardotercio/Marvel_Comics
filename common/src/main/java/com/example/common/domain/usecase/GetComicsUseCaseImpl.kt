@@ -8,6 +8,6 @@ class GetComicsUseCaseImpl(
     private val repository: ComicsRepository
 ) : GetComicsUseCase {
     override suspend fun invoke(onlyLocal: Boolean): RequestState<List<Comic>> {
-        return repository.getComics(onlyLocal)
+        return repository.getComicsFromApi()
     }
 }

@@ -15,20 +15,28 @@ class CharacterRepositoryImpl(
         comicId: Int,
         range: IntRange
     ): RequestState<List<Character>> {
-        val localResponse = mongoDbService.getCharactersFromComic(comicId)
-        if (localResponse is RequestState.Success && localResponse.data.isNotEmpty()) {
-            return localResponse.apply {
-                data.slice(range)
+        return runCatching {
+            val localResponse = mongoDbService.getCharactersFromComic(comicId)
+            if (localResponse is RequestState.Success && localResponse.data.isNotEmpty()) {
+                return RequestState.Success(localResponse.data.slice(range))
+            } else {
+                val response = apiService.getCharactersFromComic(charactersUrl.slice(range))
+                RequestState.Success(response)
             }
+        }.getOrElse {
+            RequestState.Error("Error getting characters, try again later.")
         }
-
-        val response = apiService.getCharactersFromComic(charactersUrl.slice(range))
-        return response
     }
 
     override suspend fun getAllCharactersFromComic(
         charactersUrl: List<String>
     ): RequestState<List<Character>> {
-        return apiService.getCharactersFromComic(charactersUrl)
+        return runCatching {
+            val response = apiService.getCharactersFromComic(charactersUrl)
+
+            RequestState.Success(response)
+        }.getOrElse {
+            RequestState.Error("Error getting characters, try again later.")
+        }
     }
 }

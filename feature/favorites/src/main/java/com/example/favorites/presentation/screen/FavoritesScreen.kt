@@ -2,10 +2,11 @@ package com.example.favorites.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.CircularProgressIndicator
@@ -62,7 +63,8 @@ fun FavoritesScreen(navController: NavController) {
             onContinueClicked = {
                 viewModel.setEvent(FavoritesScreenContract.Event.OnRemoveFavoriteComic)
                 showDialog = false
-            }
+            },
+            isFavorite = state.lastComicClickedOnFavorite.isFavorite
         )
     }
 
@@ -112,25 +114,32 @@ fun FavoritesScreen(navController: NavController) {
                         }
                     ) { index ->
                         val comic = comics[index]
-                        ComicCard(
-                            comic = comic,
-                            onComicClicked = {
-                                viewModel.setEvent(
-                                    FavoritesScreenContract.Event.OnComicClicked(
-                                        comic.charactersUrl,
-                                        comic.id
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Spacer(modifier = Modifier.height(Dimens.default))
+                            ComicCard(
+                                comic = comic,
+                                onComicClicked = {
+                                    viewModel.setEvent(
+                                        FavoritesScreenContract.Event.OnComicClicked(
+                                            comic.charactersUrl,
+                                            comic.id
+                                        )
                                     )
-                                )
-                            },
-                            onFavoriteClicked = {
-                                viewModel.setEvent(
-                                    FavoritesScreenContract.Event.OnFavoriteIconClicked(
-                                        comic.charactersUrl,
-                                        comic
+                                },
+                                onFavoriteClicked = {
+                                    viewModel.setEvent(
+                                        FavoritesScreenContract.Event.OnFavoriteIconClicked(
+                                            comic.charactersUrl,
+                                            comic
+                                        )
                                     )
-                                )
-                            }
-                        )
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(Dimens.default))
+                        }
                     }
                 }
             }
