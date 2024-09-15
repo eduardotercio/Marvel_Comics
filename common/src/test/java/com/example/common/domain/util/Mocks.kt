@@ -22,4 +22,17 @@ object Mocks {
     )
 
     val errorMessage = "Error at getting data"
+
+    val characterUrlList =  listOf(
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl",
+        "characterUrl"
+    )
 }

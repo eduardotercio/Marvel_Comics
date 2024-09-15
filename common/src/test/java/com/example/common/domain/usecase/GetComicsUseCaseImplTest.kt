@@ -13,27 +13,29 @@ import kotlin.test.assertEquals
 class GetComicsUseCaseImplTest {
 
     private val repository = mockk<ComicsRepository>()
-    private val getComics = GetComicsUseCaseImpl(repository)
+    private val useCase = GetComicsUseCaseImpl(repository)
 
     @Test
-    fun `GIVEN getComicsUseCase WHEN call succeeded THEN return RequestState Success`() = runTest {
-        val expectedResponse = RequestState.Success(listOf(Mocks.comic, Mocks.comic, Mocks.comic))
+    fun `WHEN repository returns Success comics THEN useCase should return the same Success comics`() =
+        runTest {
+            val expectedResponse = RequestState.Success(listOf(Mocks.comic))
+            coEvery { repository.getComicsFromApi() } returns expectedResponse
 
-        coEvery { getComics.invoke() } returns expectedResponse
-        val actualResponse = getComics.invoke()
+            val actualResponse = useCase.invoke()
 
-        assertEquals(expectedResponse, actualResponse)
-        coVerify { getComics.invoke() }
-    }
+            assertEquals(expectedResponse, actualResponse)
+            coVerify { repository.getComicsFromApi() }
+        }
 
     @Test
-    fun `GIVEN getComicsUseCase WHEN call fails THEN return RequestState Error`() = runTest {
-        val expectedResponse = RequestState.Error(Mocks.errorMessage)
+    fun `WHEN repository returns Error THEN useCase should return the same Error`() =
+        runTest {
+            val expectedResponse = RequestState.Error(Mocks.errorMessage)
 
-        coEvery { getComics.invoke() } returns expectedResponse
-        val actualResponse = getComics.invoke()
+            coEvery { repository.getComicsFromApi() } returns expectedResponse
+            val actualResponse = useCase.invoke()
 
-        assertEquals(expectedResponse, actualResponse)
-        coVerify { getComics.invoke() }
-    }
+            assertEquals(expectedResponse, actualResponse)
+            coVerify { repository.getComicsFromApi() }
+        }
 }

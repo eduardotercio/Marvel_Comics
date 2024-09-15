@@ -112,8 +112,9 @@ dependencies {
     api(libs.material.compose)
 
     // Tests
-    api(libs.koin.test)
-    api(libs.kotlin.coroutines.test)
-    api(libs.mockK.test)
-    api(libs.okhttp3.test)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.mockK.test)
+    testImplementation(libs.okhttp3.test)
+    testImplementation(libs.turbine.test)
 }
