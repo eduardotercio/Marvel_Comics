@@ -46,7 +46,7 @@ class GetCharactersPaginationUseCaseImplTest {
         }
 
     @Test
-    fun `GIVEN list of characterUrl WHEN repository returns Error THEN useCase should return the same Error`() =
+    fun `GIVEN page, pageSize, list of Url and comicId WHEN repository returns Error THEN useCase should return the same Error`() =
         runTest {
             val page = 1
             val pageSize = 8

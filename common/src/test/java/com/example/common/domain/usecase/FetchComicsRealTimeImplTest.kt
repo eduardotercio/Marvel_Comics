@@ -28,6 +28,8 @@ class FetchComicsRealTimeImplTest {
                 assert(awaitItem() == initialItems)
 
                 assert(awaitItem() == updatedItems)
+
+                awaitComplete()
             }
         }
 }
