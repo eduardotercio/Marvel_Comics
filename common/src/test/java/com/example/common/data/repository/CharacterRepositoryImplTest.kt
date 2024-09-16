@@ -5,7 +5,7 @@ import com.example.common.domain.model.Character
 import com.example.common.domain.repository.CharacterRepository
 import com.example.common.domain.service.local.MongoDbService
 import com.example.common.domain.service.remote.MarvelComicsApiService
-import com.example.common.domain.util.Mocks
+import com.example.common.util.Mocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

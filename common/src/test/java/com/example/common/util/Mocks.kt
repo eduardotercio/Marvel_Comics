@@ -1,4 +1,4 @@
-package com.example.common.domain.util
+package com.example.common.util
 
 import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
@@ -10,6 +10,16 @@ object Mocks {
         series = "Multiverso",
         imageUrl = "",
         charactersAvailable = 3,
+        charactersUrl = listOf(""),
+        isFavorite = false
+    )
+
+    val comic2 = Comic(
+        id = 2,
+        title = "Captain america",
+        series = "civil war",
+        imageUrl = "",
+        charactersAvailable = 7,
         charactersUrl = listOf(""),
         isFavorite = false
     )
