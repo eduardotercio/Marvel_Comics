@@ -19,15 +19,16 @@ class CharacterRepositoryImpl(
     ): RequestState<List<Character>> {
         return withContext(Dispatchers.IO) {
             runCatching {
-                var characters = mongoDbService.getCharactersFromComic(comicId)
-                if (characters.isNotEmpty()) {
-                    RequestState.Success(characters.slice(range))
+                val localCharacters = mongoDbService.getCharactersFromComic(comicId)
+                if (localCharacters.isNotEmpty()) {
+                    RequestState.Success(localCharacters.slice(range))
                 } else {
-                    characters = apiService.getCharactersFromComic(charactersUrl.slice(range))
-                    RequestState.Success(characters)
+                    val remoteCharacters =
+                        apiService.getCharactersFromComic(charactersUrl.slice(range))
+                    RequestState.Success(remoteCharacters)
                 }
             }.getOrElse {
-                RequestState.Error("Error getting characters, try again later.")
+                RequestState.Error("${it.message}")
             }
         }
     }

@@ -20,11 +20,11 @@ class GetCharactersPaginationUseCaseImplTest {
         runTest {
             val page = 1
             val pageSize = 8
-            val charactersUrl = Mocks.characterUrlList
+            val charactersUrl = Mocks.characterUrlListPagination
             val comicId = 0
             val range = IntRange(8, 9)
 
-            val expectedResponse = RequestState.Success(listOf(Mocks.character))
+            val expectedResponse = RequestState.Success(Mocks.characterListPagination)
             coEvery {
                 repository.getCharactersPagination(
                     charactersUrl,
@@ -36,6 +36,7 @@ class GetCharactersPaginationUseCaseImplTest {
             val actualResponse = useCase.invoke(page, pageSize, charactersUrl, comicId)
 
             assertEquals(expectedResponse, actualResponse)
+            assertEquals(charactersUrl.size, (actualResponse as RequestState.Success).data.size)
             coVerify {
                 repository.getCharactersPagination(
                     charactersUrl,
@@ -50,7 +51,7 @@ class GetCharactersPaginationUseCaseImplTest {
         runTest {
             val page = 1
             val pageSize = 8
-            val charactersUrl = Mocks.characterUrlList
+            val charactersUrl = Mocks.characterUrlListPagination
             val comicId = 0
             val range = IntRange(8, 9)
 

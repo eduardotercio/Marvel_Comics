@@ -34,14 +34,15 @@ class MongoDbServiceImpl(
             query = "id == $0 LIMIT(1)", comicId
         ).find().asFlow().firstOrNull()?.list?.firstOrNull()
 
-        return if (comic == null) {
-            emptyList()
+        if (comic == null) {
+            return emptyList()
         } else {
             val characterList = comic.charactersList.asFlow().firstOrNull()?.list?.map {
                 it.toCharacter()
-            } ?: emptyList()
-            characterList
+            }
+            return characterList ?: emptyList()
         }
+
     }
 
     override suspend fun deleteComic(comic: Comic) {

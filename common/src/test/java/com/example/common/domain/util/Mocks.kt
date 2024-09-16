@@ -23,7 +23,9 @@ object Mocks {
 
     val errorMessage = "Error at getting data"
 
-    val characterUrlList =  listOf(
+    val characterUrlList = listOf("characterUrl")
+
+    val characterUrlListPagination = listOf(
         "characterUrl",
         "characterUrl",
         "characterUrl",
@@ -34,5 +36,18 @@ object Mocks {
         "characterUrl",
         "characterUrl",
         "characterUrl"
+    )
+
+    val characterListPagination = listOf(
+        character,
+        character,
+        character,
+        character,
+        character,
+        character,
+        character,
+        character,
+        character,
+        character
     )
 }

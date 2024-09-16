@@ -18,22 +18,24 @@ class GetAllCharactersFromComicUseCaseImplTest {
     @Test
     fun `GIVEN list of characterUrl WHEN repository returns Success characters THEN useCase should return the same Success characters`() =
         runTest {
+            val charactersUrl = Mocks.characterUrlList
             val expectedResponse =
                 RequestState.Success(listOf(Mocks.character))
-            val charactersUrl = listOf("characterUrl")
 
             coEvery { repository.getAllCharactersFromComic(charactersUrl) } returns expectedResponse
             val actualResponse = useCase.invoke(charactersUrl)
 
             assertEquals(expectedResponse, actualResponse)
+            assertEquals(expectedResponse, actualResponse)
+            assertEquals(charactersUrl.size, (actualResponse as RequestState.Success).data.size)
             coVerify { repository.getAllCharactersFromComic(charactersUrl) }
         }
 
     @Test
     fun `GIVEN list of characterUrl WHEN repository returns Error THEN useCase should return the same Error`() =
         runTest {
+            val charactersUrl = Mocks.characterUrlList
             val expectedResponse = RequestState.Error(Mocks.errorMessage)
-            val charactersUrl = listOf("characterUrl")
 
             coEvery { repository.getAllCharactersFromComic(charactersUrl) } returns expectedResponse
             val actualResponse = useCase.invoke(charactersUrl)
