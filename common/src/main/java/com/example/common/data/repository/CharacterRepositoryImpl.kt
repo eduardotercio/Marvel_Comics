@@ -5,6 +5,8 @@ import com.example.common.domain.model.Character
 import com.example.common.domain.repository.CharacterRepository
 import com.example.common.domain.service.local.MongoDbService
 import com.example.common.domain.service.remote.MarvelComicsApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CharacterRepositoryImpl(
     private val apiService: MarvelComicsApiService,
@@ -15,16 +17,19 @@ class CharacterRepositoryImpl(
         comicId: Int,
         range: IntRange
     ): RequestState<List<Character>> {
-        return runCatching {
-            val localResponse = mongoDbService.getCharactersFromComic(comicId)
-            if (localResponse is RequestState.Success && localResponse.data.isNotEmpty()) {
-                return RequestState.Success(localResponse.data.slice(range))
-            } else {
-                val response = apiService.getCharactersFromComic(charactersUrl.slice(range))
-                RequestState.Success(response)
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                val localCharacters = mongoDbService.getCharactersFromComic(comicId)
+                if (localCharacters.isNotEmpty()) {
+                    RequestState.Success(localCharacters.slice(range))
+                } else {
+                    val remoteCharacters =
+                        apiService.getCharactersFromComic(charactersUrl.slice(range))
+                    RequestState.Success(remoteCharacters)
+                }
+            }.getOrElse {
+                RequestState.Error("${it.message}")
             }
-        }.getOrElse {
-            RequestState.Error("Error getting characters, try again later.")
         }
     }
 

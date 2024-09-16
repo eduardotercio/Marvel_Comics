@@ -25,7 +25,9 @@ class ComicsRepositoryImpl(
     }
 
     override suspend fun fetchLocalComicsRealTime(): Flow<List<Comic>> {
-        return mongoDbService.fetchComicsRealTime()
+        return withContext(Dispatchers.IO) {
+            mongoDbService.fetchComicsRealTime()
+        }
     }
 
     override suspend fun saveComic(comic: Comic, characters: List<Character>) {
