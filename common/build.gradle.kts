@@ -79,23 +79,42 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":designsystem"))
+    // realm
     api(libs.mongodb.realm)
     api(libs.kotlinx.coroutines.core)
+
+    // ktor
     api(libs.ktor.client)
     api(libs.ktor.cio)
     api(libs.ktor.client.content.negotiation)
     api(libs.ktor.serialization.kotlinx.json)
+
+    // koin
     api(libs.koin.android)
     api(libs.koin.core)
     api(libs.koin.ktor)
     api(libs.koin.compose)
     api(libs.koin.androidx.compose)
-    api(libs.koin.test)
+
+    // Lifecycle
     api(libs.lifecycle.viewmodel)
     api(libs.lifecycle.viewmodel.compose)
+
+    // Serialization
     api(libs.kotlinx.serialization.json)
-    api(libs.navigation.compose)
+
+    // Coil
     api(libs.coil)
     api(libs.coil.compose)
+
+    // Compose
+    api(libs.navigation.compose)
     api(libs.material.compose)
+
+    // Tests
+    testImplementation(libs.koin.test)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.mockK.test)
+    testImplementation(libs.okhttp3.test)
+    testImplementation(libs.turbine.test)
 }

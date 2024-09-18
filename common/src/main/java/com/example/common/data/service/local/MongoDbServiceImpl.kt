@@ -3,7 +3,6 @@ package com.example.common.data.service.local
 import com.example.common.data.mapper.toCharacter
 import com.example.common.data.mapper.toComic
 import com.example.common.data.mapper.toComicDto
-import com.example.common.data.util.RequestState
 import com.example.common.data.model.dto.ComicDto
 import com.example.common.domain.model.Character
 import com.example.common.domain.model.Comic
@@ -24,42 +23,26 @@ class MongoDbServiceImpl(
         }
     }
 
-    override suspend fun getComics(): RequestState<List<Comic>> {
-        return runCatching {
-            val comics = realm.query(
-                clazz = ComicDto::class,
-            ).find().asFlow().firstOrNull()?.list?.map {
-                it.toComic()
-            }
-            RequestState.Success(comics ?: emptyList())
-        }.getOrElse {
-            RequestState.Error("Error getting comics, try again later.")
-        }
-    }
-
     override suspend fun fetchComicsRealTime(): Flow<List<Comic>> {
         return realm.query<ComicDto>().asFlow()
             .map { resultsChange -> resultsChange.list.map { it.toComic() } }
     }
 
-    override suspend fun getCharactersFromComic(comicId: Int): RequestState<List<Character>> {
-        return runCatching {
-            val comic = realm.query(
-                clazz = ComicDto::class,
-                query = "id == $0 LIMIT(1)", comicId
-            ).find().asFlow().firstOrNull()?.list?.firstOrNull()
+    override suspend fun getCharactersFromComic(comicId: Int): List<Character> {
+        val comic = realm.query(
+            clazz = ComicDto::class,
+            query = "id == $0 LIMIT(1)", comicId
+        ).find().asFlow().firstOrNull()?.list?.firstOrNull()
 
-            if (comic == null) {
-                RequestState.Success(emptyList())
-            } else {
-                val characterList = comic.charactersList.asFlow().firstOrNull()?.list?.map {
-                    it.toCharacter()
-                }
-                RequestState.Success(characterList ?: emptyList())
+        if (comic == null) {
+            return emptyList()
+        } else {
+            val characterList = comic.charactersList.asFlow().firstOrNull()?.list?.map {
+                it.toCharacter()
             }
-        }.getOrElse {
-            RequestState.Error("Error getting characters, try again later.")
+            return characterList ?: emptyList()
         }
+
     }
 
     override suspend fun deleteComic(comic: Comic) {
